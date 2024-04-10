@@ -1,5 +1,4 @@
 // NOTE:
-// 2- buscar API de coordenadas a cidudad
 // 3- Incorporar webpack
 // 4- API imágenes
 // 5- Cálculo de parámetros para la interfase (temperatura, Dif temperatura con percepcion, hora del día, probabilidad de lluvia...)
@@ -9,34 +8,19 @@ const getIPlocation = async () => {
     try {
         const ipAPI = await fetch('http://ip-api.com/json/', { mode: 'cors' });
         const response = await ipAPI.json();
-        return response.city;
+        return `${response.lat},${response.lon}`;
     } catch {
-        return 'Bogotá';
+        return '4.6347462459849265,-74.07258405134549';
     }
 };
 
 const getDeviceCoords = () => {
     return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
-            (location) => resolve(location.coords),
+            (cor) => resolve(`${cor.coords.latitude},${cor.coords.longitude}`),
             (err) => reject(Error(err)),
         );
     });
-};
-
-// getDeviceCoords().then((cords) => console.log(cords));
-
-const getLocationFromCoords = async ({ latitude, longitude }) => {
-    try {
-        const locationAPI = await fetch(
-            `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=66169804de7ce334066812gjn2dfd6b`,
-            { mode: 'cors' },
-        );
-        const response = await locationAPI.json();
-        return response.address.city;
-    } catch (err) {
-        console.log('Algo salio mal con el paso de cordenadas a locación', err);
-    }
 };
 
 const getCordsFromLocation = async (location) => {
@@ -51,12 +35,6 @@ const getCordsFromLocation = async (location) => {
         console.log('Error con el paso de locación a coordenadas', err);
     }
 };
-
-getCordsFromLocation('melgar tolima')
-    // .then((cords) => getLocationFromCoords(cords))
-    .then((location) => getWeather(location))
-    .then((info) => makeWeatherObject(info))
-    .then((card) => console.log(card));
 
 const getWeather = async (location) => {
     try {
@@ -84,8 +62,11 @@ const makeWeatherObject = ({ createCard, info }) => {
 
     return {
         hasWeather: true,
+
         location: info.location.name,
+        region: info.location.region,
         country: info.location.country,
+
         today: {
             temp: {
                 cDeg: current.temp_c,
@@ -250,10 +231,22 @@ const makeWeatherObject = ({ createCard, info }) => {
 // 5 means Very Unhealthy
 // 6 means Hazardous
 
-// console.log(getIPlocation().then((city) => getWeather(city)));
+const getImage = async (searchPrompt) => {
+    try {
+        const request = await fetch(
+            `https://api.unsplash.com/photos/random/?query=${searchPrompt} landscape&orientation=landscape&client_id=zclGqZQC79tn1uXMgO8-ORR3nJS9Hn4h74ICzbgnbk8`,
+            { mode: 'cors' },
+        );
+		const response = await request.json()
+		console.log(response)
+    } catch (err) {
+        console.log('error en la carga de imagen', err);
+    }
+};
+
+getImage('tristeza')
 
 // const card = getDeviceCoords()
-//     .then((cords) => getLocationFromCoords(cords.latitude, cords.longitude))
 //     .then((location) => getWeather(location))
 //     .then((weatherInfo) => makeWeatherObject(weatherInfo))
 //     .then((card) => console.log(card));
