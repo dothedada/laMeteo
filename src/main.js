@@ -1,3 +1,11 @@
+// NOTE:
+// 1- Cuadrar los pronósticos para horas dinales del día
+// 2- buscar API de coordenadas a cidudad
+// 3- Incorporar webpack
+// 4- API imágenes
+// 5- Cálculo de parámetros para la interfase (temperatura, Dif temperatura con percepcion, hora del día, probabilidad de lluvia...)
+// 6- API música
+
 const getIPlocation = async () => {
     try {
         const ipAPI = await fetch('http://ip-api.com/json/', { mode: 'cors' });
@@ -9,140 +17,178 @@ const getIPlocation = async () => {
 };
 
 const getWeather = async (location) => {
-    const now = new Date().getHours();
-	console.log(now)
     try {
         const weatherApi = await fetch(
             `https://api.weatherapi.com/v1/forecast.json?key=897a00842abe4196a0330347240904&q=${location}&days=3&aqi=yes&alerts=no`,
             { mode: 'cors' },
         );
         const response = await weatherApi.json();
+
+        const now = 22;
+        // const now = new Date().getHours();
+        const current = response.current;
+        const forecastDay = response.forecast.forecastday;
+
         return {
+            hasWeather: true,
             location: response.location.name,
             today: {
                 temp: {
-                    cDeg: response.current.temp_c,
-                    fDeg: response.current.temp_f,
+                    cDeg: current.temp_c,
+                    fDeg: current.temp_f,
                     min: {
-                        cDeg: response.forecast.forecastday[0].day.mintemp_c,
-                        fDeg: response.forecast.forecastday[0].day.mintemp_f,
+                        cDeg: forecastDay[0].day.mintemp_c,
+                        fDeg: forecastDay[0].day.mintemp_f,
                     },
                     max: {
-                        cDeg: response.forecast.forecastday[0].day.maxtemp_c,
-                        fDeg: response.forecast.forecastday[0].day.maxtemp_f,
+                        cDeg: forecastDay[0].day.maxtemp_c,
+                        fDeg: forecastDay[0].day.maxtemp_f,
                     },
                     feels: {
-                        cDeg: response.current.feelslike_c,
-                        fDeg: response.current.feelslike_f,
+                        cDeg: current.feelslike_c,
+                        fDeg: current.feelslike_f,
                     },
                 },
-                condition: response.current.condition.text,
-                rain: response.forecast.forecastday[0].day.daily_chance_of_rain,
-                snow: response.forecast.forecastday[0].day.daily_will_it_snow,
-                uv: response.current.uv,
-                airCuality: response.current.air_quality['us-epa-index'],
-                moon: response.forecast.forecastday[0].astro.moon_phase,
-                moon_illumination:
-                    response.forecast.forecastday[0].astro.moon_illumination,
+                condition: current.condition.text,
+                rain: forecastDay[0].day.daily_chance_of_rain,
+                snow: forecastDay[0].day.daily_will_it_snow,
+                uv: current.uv,
+                airCuality: current.air_quality['us-epa-index'],
+                moon: forecastDay[0].astro.moon_phase,
+                moon_illumination: forecastDay[0].astro.moon_illumination,
 
                 nextHour: {
+                    time:
+                        now + 1 > 23
+                            ? forecastDay[1].hour[0].time
+                            : forecastDay[0].hour[now + 1].time,
                     temp: {
-                        cDeg: response.forecast.forecastday[0].hour[now + 1]
-                            .temp_c,
+                        cDeg:
+                            now + 1 > 23
+                                ? forecastDay[1].hour[0].temp_c
+                                : forecastDay[0].hour[now + 1].temp_c,
 
-                        fDeg: response.forecast.forecastday[0].hour[now + 1]
-                            .temp_f,
+                        fDeg:
+                            now + 1 > 23
+                                ? forecastDay[1].hour[0].temp_f
+                                : forecastDay[0].hour[now + 1].temp_f,
                     },
-                    rain: response.forecast.forecastday[0].hour[now + 1]
-                        .chance_of_rain,
-                    snow: response.forecast.forecastday[0].hour[now + 1]
-                        .chance_of_snow,
+                    rain:
+                        now + 1 > 23
+                            ? forecastDay[1].hour[0].chance_of_rain
+                            : forecastDay[0].hour[now + 1].chance_of_rain,
+                    snow:
+                        now + 1 > 23
+                            ? forecastDay[1].hour[0].chance_of_snow
+                            : forecastDay[0].hour[now + 1].chance_of_snow,
                     condition:
-                        response.forecast.forecastday[0].hour[now + 1].condition
-                            .text,
+                        now + 1 > 23
+                            ? forecastDay[1].hour[0].condition.text
+                            : forecastDay[0].hour[now + 1].condition.text,
                 },
 
                 next2Hours: {
+                    time:
+                        now + 2 > 23
+                            ? forecastDay[1].hour[now + 2 - 24].time
+                            : forecastDay[0].hour[now + 2].time,
                     temp: {
-                        cDeg: response.forecast.forecastday[0].hour[now + 2]
-                            .temp_c,
+                        cDeg:
+                            now + 2 > 23
+                                ? forecastDay[1].hour[now + 2 - 24].temp_c
+                                : forecastDay[0].hour[now + 2].temp_c,
 
-                        fDeg: response.forecast.forecastday[0].hour[now + 2]
-                            .temp_f,
+                        fDeg:
+                            now + 2 > 23
+                                ? forecastDay[1].hour[now + 2 - 24].temp_f
+                                : forecastDay[0].hour[now + 2].temp_f,
                     },
-                    rain: response.forecast.forecastday[0].hour[now + 2]
-                        .chance_of_rain,
-                    snow: response.forecast.forecastday[0].hour[now + 2]
-                        .chance_of_snow,
+                    rain:
+                        now + 2 > 23
+                            ? forecastDay[1].hour[now + 2 - 24].chance_of_rain
+                            : forecastDay[0].hour[now + 2].chance_of_rain,
+                    snow:
+                        now + 2 > 23
+                            ? forecastDay[1].hour[now + 2 - 24].chance_of_snow
+                            : forecastDay[0].hour[now + 2].chance_of_snow,
                     condition:
-                        response.forecast.forecastday[0].hour[now + 2].condition
-                            .text,
+                        now + 2 > 23
+                            ? forecastDay[1].hour[now + 2 - 24].condition.text
+                            : forecastDay[0].hour[now + 2].condition.text,
                 },
 
                 next3Hours: {
+                    time:
+                        now + 3 > 23
+                            ? forecastDay[1].hour[now + 3 - 24].time
+                            : forecastDay[0].hour[now + 3].time,
                     temp: {
-                        cDeg: response.forecast.forecastday[0].hour[now + 3]
-                            .temp_c,
+                        cDeg:
+                            now + 3 > 23
+                                ? forecastDay[1].hour[now + 3 - 24].temp_c
+                                : forecastDay[0].hour[now + 3].temp_c,
 
-                        fDeg: response.forecast.forecastday[0].hour[now + 3]
-                            .temp_f,
+                        fDeg:
+                            now + 3 > 23
+                                ? forecastDay[1].hour[now + 3 - 24].temp_f
+                                : forecastDay[0].hour[now + 3].temp_f,
                     },
-                    rain: response.forecast.forecastday[0].hour[now + 3]
-                        .chance_of_rain,
-                    snow: response.forecast.forecastday[0].hour[now + 3]
-                        .chance_of_snow,
+                    rain:
+                        now + 3 > 23
+                            ? forecastDay[1].hour[now + 3 - 24].chance_of_rain
+                            : forecastDay[0].hour[now + 3].chance_of_rain,
+                    snow:
+                        now + 3 > 23
+                            ? forecastDay[1].hour[now + 3 - 24].chance_of_snow
+                            : forecastDay[0].hour[now + 3].chance_of_snow,
                     condition:
-                        response.forecast.forecastday[0].hour[now + 3].condition
-                            .text,
+                        now + 3 > 23
+                            ? forecastDay[1].hour[now + 3 - 24].condition.text
+                            : forecastDay[0].hour[now + 3].condition.text,
                 },
             },
 
             tomorrow: {
                 temp: {
                     min: {
-                        cDeg: response.forecast.forecastday[1].day.mintemp_c,
-                        fDeg: response.forecast.forecastday[1].day.mintemp_f,
+                        cDeg: forecastDay[1].day.mintemp_c,
+                        fDeg: forecastDay[1].day.mintemp_f,
                     },
                     max: {
-                        cDeg: response.forecast.forecastday[1].day.maxtemp_c,
-                        fDeg: response.forecast.forecastday[1].day.maxtemp_f,
+                        cDeg: forecastDay[1].day.maxtemp_c,
+                        fDeg: forecastDay[1].day.maxtemp_f,
                     },
                 },
-                condition: response.forecast.forecastday[1].day.condition.text,
-                rain: response.forecast.forecastday[1].day.daily_chance_of_rain,
-                snow: response.forecast.forecastday[1].day.daily_will_it_snow,
-                uv: response.forecast.forecastday[1].day.uv,
-                airCuallity:
-                    response.forecast.forecastday[1].day.air_quality[
-                        'us-epa-index'
-                    ],
-                moon: response.forecast.forecastday[1].astro.moon_phase,
+                condition: forecastDay[1].day.condition.text,
+                rain: forecastDay[1].day.daily_chance_of_rain,
+                snow: forecastDay[1].day.daily_will_it_snow,
+                uv: forecastDay[1].day.uv,
+                airCuallity: forecastDay[1].day.air_quality['us-epa-index'],
+                moon: forecastDay[1].astro.moon_phase,
             },
 
             afterTomorrow: {
                 temp: {
                     min: {
-                        cDeg: response.forecast.forecastday[2].day.mintemp_c,
-                        fDeg: response.forecast.forecastday[2].day.mintemp_f,
+                        cDeg: forecastDay[2].day.mintemp_c,
+                        fDeg: forecastDay[2].day.mintemp_f,
                     },
                     max: {
-                        cDeg: response.forecast.forecastday[2].day.maxtemp_c,
-                        fDeg: response.forecast.forecastday[2].day.maxtemp_f,
+                        cDeg: forecastDay[2].day.maxtemp_c,
+                        fDeg: forecastDay[2].day.maxtemp_f,
                     },
                 },
-                condition: response.forecast.forecastday[2].day.condition.text,
-                rain: response.forecast.forecastday[2].day.daily_chance_of_rain,
-                snow: response.forecast.forecastday[2].day.daily_will_it_snow,
-                uv: response.forecast.forecastday[2].day.uv,
-                airCuallity:
-                    response.forecast.forecastday[2].day.air_quality[
-                        'us-epa-index'
-                    ],
-                moon: response.forecast.forecastday[2].astro.moon_phase,
+                condition: forecastDay[2].day.condition.text,
+                rain: forecastDay[2].day.daily_chance_of_rain,
+                snow: forecastDay[2].day.daily_will_it_snow,
+                uv: forecastDay[2].day.uv,
+                airCuallity: forecastDay[2].day.air_quality['us-epa-index'],
+                moon: forecastDay[2].astro.moon_phase,
             },
         };
     } catch (err) {
         console.log('algo malio sal', err);
+        return { hasWeather: false };
     }
 };
 
@@ -154,4 +200,4 @@ const getWeather = async (location) => {
 // 5 means Very Unhealthy
 // 6 means Hazardous
 
-console.log(getIPlocation().then(city => getWeather(city)));
+console.log(getIPlocation().then((city) => getWeather(city)));
