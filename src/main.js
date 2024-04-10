@@ -1,6 +1,5 @@
 // NOTE:
 // 3- Incorporar webpack
-// 4- API imágenes
 // 5- Cálculo de parámetros para la interfase (temperatura, Dif temperatura con percepcion, hora del día, probabilidad de lluvia...)
 // 6- API música
 
@@ -237,14 +236,12 @@ const getImage = async (searchPrompt) => {
             `https://api.unsplash.com/photos/random/?query=${searchPrompt} landscape&orientation=landscape&client_id=zclGqZQC79tn1uXMgO8-ORR3nJS9Hn4h74ICzbgnbk8`,
             { mode: 'cors' },
         );
-		const response = await request.json()
-		console.log(response)
+        const response = await request.json();
+        console.log(response);
     } catch (err) {
         console.log('error en la carga de imagen', err);
     }
 };
-
-getImage('tristeza')
 
 // const card = getDeviceCoords()
 //     .then((location) => getWeather(location))
