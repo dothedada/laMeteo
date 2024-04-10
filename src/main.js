@@ -1,5 +1,4 @@
 // NOTE:
-// 1- Cuadrar los pronósticos para horas dinales del día
 // 2- buscar API de coordenadas a cidudad
 // 3- Incorporar webpack
 // 4- API imágenes
@@ -15,6 +14,32 @@ const getIPlocation = async () => {
         return 'Bogotá';
     }
 };
+
+const getLocationFromCoords = async (latitude, longitude) => {
+    try {
+        const locationAPI = await fetch(
+            `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=66169804de7ce334066812gjn2dfd6b`,
+            { mode: 'cors' },
+        );
+        const response = await locationAPI.json();
+        console.log(response.address.city);
+    } catch (err) {
+        console.log('Algo salio mal con el paso de cordenadas a locación', err);
+    }
+};
+
+const getDeviceCoords = () => {
+    return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+            (location) => resolve(location.coords),
+            (err) => reject(Error(err)),
+        );
+    });
+};
+
+getDeviceCoords().then((cords) =>
+    getLocationFromCoords(cords.latitude, cords.longitude),
+);
 
 const getWeather = async (location) => {
     try {
@@ -200,4 +225,4 @@ const getWeather = async (location) => {
 // 5 means Very Unhealthy
 // 6 means Hazardous
 
-console.log(getIPlocation().then((city) => getWeather(city)));
+// console.log(getIPlocation().then((city) => getWeather(city)));
