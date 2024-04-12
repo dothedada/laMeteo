@@ -8,14 +8,13 @@ const getIPlocation = async () => {
     }
 };
 
-const getDeviceCoords = () => {
-    return new Promise((resolve, reject) => {
+const getDeviceCoords = () =>
+    new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
             (cor) => resolve(`${cor.coords.latitude},${cor.coords.longitude}`),
             (err) => reject(Error(err)),
         );
     });
-};
 
 const getCordsFromLocation = async (location) => {
     try {
@@ -26,7 +25,7 @@ const getCordsFromLocation = async (location) => {
         const response = await locationAPI.json();
         return `${response[0].lat},${response[0].lon}`;
     } catch (err) {
-        console.log('Error con el paso de locación a coordenadas', err);
+        throw new Error('Error con el paso de locación a coordenadas', err)
     }
 };
 
