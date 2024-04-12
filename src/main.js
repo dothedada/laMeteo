@@ -68,20 +68,10 @@ const makeWeatherObject = ({ createCard, info }) => {
 
         today: {
             temp: {
-                cDeg: current.temp_c,
-                fDeg: current.temp_f,
-                min: {
-                    cDeg: forecastDay[0].day.mintemp_c,
-                    fDeg: forecastDay[0].day.mintemp_f,
-                },
-                max: {
-                    cDeg: forecastDay[0].day.maxtemp_c,
-                    fDeg: forecastDay[0].day.maxtemp_f,
-                },
-                feels: {
-                    cDeg: current.feelslike_c,
-                    fDeg: current.feelslike_f,
-                },
+                current: current.temp_c,
+                min: forecastDay[0].day.mintemp_c,
+                max: forecastDay[0].day.maxtemp_c,
+                feels: current.feelslike_c,
             },
             condition: current.condition.text,
             rain: forecastDay[0].day.daily_chance_of_rain,
@@ -92,21 +82,10 @@ const makeWeatherObject = ({ createCard, info }) => {
             moon_illumination: forecastDay[0].astro.moon_illumination,
 
             nextHour: {
-                time:
+                temp:
                     now + 1 > 23
-                        ? forecastDay[1].hour[0].time
-                        : forecastDay[0].hour[now + 1].time,
-                temp: {
-                    cDeg:
-                        now + 1 > 23
-                            ? forecastDay[1].hour[0].temp_c
-                            : forecastDay[0].hour[now + 1].temp_c,
-
-                    fDeg:
-                        now + 1 > 23
-                            ? forecastDay[1].hour[0].temp_f
-                            : forecastDay[0].hour[now + 1].temp_f,
-                },
+                        ? forecastDay[1].hour[0].temp_c
+                        : forecastDay[0].hour[now + 1].temp_c,
                 rain:
                     now + 1 > 23
                         ? forecastDay[1].hour[0].chance_of_rain
@@ -122,21 +101,10 @@ const makeWeatherObject = ({ createCard, info }) => {
             },
 
             next2Hours: {
-                time:
+                temp:
                     now + 2 > 23
-                        ? forecastDay[1].hour[now + 2 - 24].time
-                        : forecastDay[0].hour[now + 2].time,
-                temp: {
-                    cDeg:
-                        now + 2 > 23
-                            ? forecastDay[1].hour[now + 2 - 24].temp_c
-                            : forecastDay[0].hour[now + 2].temp_c,
-
-                    fDeg:
-                        now + 2 > 23
-                            ? forecastDay[1].hour[now + 2 - 24].temp_f
-                            : forecastDay[0].hour[now + 2].temp_f,
-                },
+                        ? forecastDay[1].hour[now + 2 - 24].temp_c
+                        : forecastDay[0].hour[now + 2].temp_c,
                 rain:
                     now + 2 > 23
                         ? forecastDay[1].hour[now + 2 - 24].chance_of_rain
@@ -152,21 +120,10 @@ const makeWeatherObject = ({ createCard, info }) => {
             },
 
             next3Hours: {
-                time:
+                temp:
                     now + 3 > 23
-                        ? forecastDay[1].hour[now + 3 - 24].time
-                        : forecastDay[0].hour[now + 3].time,
-                temp: {
-                    cDeg:
-                        now + 3 > 23
-                            ? forecastDay[1].hour[now + 3 - 24].temp_c
-                            : forecastDay[0].hour[now + 3].temp_c,
-
-                    fDeg:
-                        now + 3 > 23
-                            ? forecastDay[1].hour[now + 3 - 24].temp_f
-                            : forecastDay[0].hour[now + 3].temp_f,
-                },
+                        ? forecastDay[1].hour[now + 3 - 24].temp_c
+                        : forecastDay[0].hour[now + 3].temp_c,
                 rain:
                     now + 3 > 23
                         ? forecastDay[1].hour[now + 3 - 24].chance_of_rain
@@ -184,14 +141,9 @@ const makeWeatherObject = ({ createCard, info }) => {
 
         tomorrow: {
             temp: {
-                min: {
-                    cDeg: forecastDay[1].day.mintemp_c,
-                    fDeg: forecastDay[1].day.mintemp_f,
-                },
-                max: {
-                    cDeg: forecastDay[1].day.maxtemp_c,
-                    fDeg: forecastDay[1].day.maxtemp_f,
-                },
+                min: forecastDay[1].day.mintemp_c,
+                max: forecastDay[1].day.maxtemp_c,
+                avg: forecastDay[1].day.avgtemp_c,
             },
             condition: forecastDay[1].day.condition.text,
             rain: forecastDay[1].day.daily_chance_of_rain,
@@ -203,14 +155,9 @@ const makeWeatherObject = ({ createCard, info }) => {
 
         afterTomorrow: {
             temp: {
-                min: {
-                    cDeg: forecastDay[2].day.mintemp_c,
-                    fDeg: forecastDay[2].day.mintemp_f,
-                },
-                max: {
-                    cDeg: forecastDay[2].day.maxtemp_c,
-                    fDeg: forecastDay[2].day.maxtemp_f,
-                },
+                min: forecastDay[2].day.mintemp_c,
+                max: forecastDay[2].day.maxtemp_c,
+                avg: forecastDay[2].day.avgtemp_c,
             },
             condition: forecastDay[2].day.condition.text,
             rain: forecastDay[2].day.daily_chance_of_rain,
@@ -243,7 +190,7 @@ const getImage = async (searchPrompt) => {
     }
 };
 
-// const card = getDeviceCoords()
-//     .then((location) => getWeather(location))
-//     .then((weatherInfo) => makeWeatherObject(weatherInfo))
-//     .then((card) => console.log(card));
+const card = getDeviceCoords()
+    .then((location) => getWeather(location))
+    .then((weatherInfo) => makeWeatherObject(weatherInfo))
+    .then((card) => console.log(card));
