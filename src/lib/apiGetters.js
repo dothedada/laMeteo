@@ -25,7 +25,7 @@ const getCordsFromLocation = async (location) => {
         const response = await locationAPI.json();
         return `${response[0].lat},${response[0].lon}`;
     } catch (err) {
-        throw new Error('Error con el paso de locación a coordenadas', err)
+        throw new Error('Error con el paso de locación a coordenadas', err);
     }
 };
 
@@ -46,13 +46,25 @@ const getWeather = async (location) => {
 };
 
 const getImage = async (searchPrompt) => {
+    const textPrompt = searchPrompt.trim().replace(/\s+/g, '-');
+
     try {
         const request = await fetch(
-            `https://api.unsplash.com/photos/random/?query=${searchPrompt} landscape&orientation=landscape&client_id=zclGqZQC79tn1uXMgO8-ORR3nJS9Hn4h74ICzbgnbk8`,
+            `https://api.unsplash.com/photos/random/?query=${textPrompt}&orientation=landscape&client_id=zclGqZQC79tn1uXMgO8-ORR3nJS9Hn4h74ICzbgnbk8`,
             { mode: 'cors' },
         );
         const response = await request.json();
-        return response;
+        return {
+            alt: {
+                en: response.alt_description.replace('-', ' '),
+                es: response.alternative_slugs.es
+                    .split('-')
+                    .slice(0, -1)
+                    .join(' '),
+            },
+            url: response.urls.regular,
+            html: `<a href="${response.user.links.html}?utm_source=feel_the_weather&utm_medium=referral">${response.user.name}</a> / <a href="https://unsplash.com/?utm_source=feel_the_weather&utm_medium=referral">Unsplash</a>`,
+        };
     } catch (err) {
         throw new Error('error en la carga de imagen', err);
     }
