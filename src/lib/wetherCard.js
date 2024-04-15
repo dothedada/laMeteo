@@ -99,21 +99,7 @@ const makeWeatherObject = ({ createCard, info }) => {
             airCuallity: forecastDay[1].day.air_quality['us-epa-index'],
             moon: forecastDay[1].astro.moon_phase,
         },
-
-        afterTomorrow: {
-            temp: {
-                min: forecastDay[2].day.mintemp_c,
-                max: forecastDay[2].day.maxtemp_c,
-                avg: forecastDay[2].day.avgtemp_c,
-            },
-            condition: forecastDay[2].day.condition.text,
-            rain: forecastDay[2].day.daily_chance_of_rain,
-            snow: forecastDay[2].day.daily_will_it_snow,
-            uv: forecastDay[2].day.uv,
-            airCuallity: forecastDay[2].day.air_quality['us-epa-index'],
-            moon: forecastDay[2].astro.moon_phase,
-        },
     };
 };
 
-export default makeWeatherObject
+export default makeWeatherObject;

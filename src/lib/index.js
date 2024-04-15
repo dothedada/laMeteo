@@ -1,3 +1,4 @@
+import './styles.css'
 import {
     getIPlocation,
     getDeviceCoords,
