@@ -10,7 +10,7 @@ const [mode, modeConf] = argv.find((e) => e === 'serve')
 
 module.exports = {
     mode,
-    entry: './src/lib/main.js',
+    entry: './src/lib/index.js',
 
     stats: 'none',
 
@@ -32,8 +32,8 @@ module.exports = {
     output: {
         filename: 'main.js',
         path: path.resolve(__dirname, 'public'),
-        // clean: !modeConf,
-        clean: true,
+        clean: !modeConf,
+        // clean: true,
         assetModuleFilename: 'assets/[name][ext]',
     },
 

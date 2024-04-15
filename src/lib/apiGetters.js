@@ -23,19 +23,20 @@ const getCordsFromLocation = async (location) => {
             { mode: 'cors' },
         );
         const response = await locationAPI.json();
-        return `${response[0].lat},${response[0].lon}`;
+        return [response[0].lat, response[0].lon];
     } catch (err) {
         throw new Error('Error con el paso de locación a coordenadas', err);
     }
 };
 
 const getWeather = async (location) => {
+    const [lat, lon] = location;
+    const weatherKey = '897a00842abe4196a0330347240904';
+    const weatherURL = 'https://api.weatherapi.com/v1/forecast.json?';
+    const weatherRequest = `${weatherURL}key=${weatherKey}&q=${lat},${lon}&days=2&aqi=yes&alerts=no`;
     try {
-        const weatherApi = await fetch(
-            `https://api.weatherapi.com/v1/forecast.json?key=897a00842abe4196a0330347240904&q=${location}&days=3&aqi=yes&alerts=no`,
-            { mode: 'cors' },
-        );
-        const weatherInfo = await weatherApi.json();
+        const request = await fetch(weatherRequest, { mode: 'cors' });
+        const weatherInfo = await request.json();
         return { createCard: true, info: weatherInfo };
     } catch (err) {
         return {
