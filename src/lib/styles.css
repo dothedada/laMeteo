@@ -112,11 +112,19 @@ img {
 /* Secciones */
 body {
     line-height: 24px;
-	font-family: 'Archivo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Archivo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--background);
     color: var(--text);
 }
 /* Accesibilidad del contenido*/
+
+/* Test fondo */
+
+.fondoCompartido {
+	background-attachment: fixed;
+	background-size: cover;
+}
+
 .hidden,
 [hidden] {
     display: none !important;
