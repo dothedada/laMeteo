@@ -18,13 +18,13 @@ import makeWeatherObject from './wetherCard';
 const img = document.createElement('img');
 document.body.append(img);
 
-getCordsFromLocation('NY')
-    .then((location) => getWeather(location))
-    .then((info) => makeWeatherObject(info))
-    .then((card) => {
-        console.log(JSON.stringify(card, null, 2));
+// getCordsFromLocation('NY')
+//     .then((location) => getWeather(location))
+//     .then((info) => makeWeatherObject(info))
+//     .then((card) => {
+//         console.log(JSON.stringify(card, null, 2));
         // getImage(`${card.today.condition}-${card.country}`);
-    })
+    // })
     // .then((photo) => {
     //     img.setAttribute('src', photo.url);
     //     img.setAttribute('alt', photo.alt.es);

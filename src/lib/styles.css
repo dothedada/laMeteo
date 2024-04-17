@@ -55,21 +55,17 @@ html {
 *::before {
     margin: 0;
     padding: 0;
+	box-sizing: border-box;
 }
 /* Tipografía */
 h1,
 h2,
 h3,
-h4 {
-    font-family: var(--font-headings);
-    line-height: var(--line-height);
-    text-wrap: balance;
-}
+h4,
 p {
-    max-width: 65ch;
-    line-height: calc(1ex / 0.32);
-    margin: 0 0 calc(1ex / 0.32);
-    text-wrap: pretty;
+    text-wrap: balance;
+    font-size: 1rem;
+    line-height: 1.5rem;
 }
 b,
 strong {
@@ -111,19 +107,56 @@ img {
 }
 /* Secciones */
 body {
-    line-height: 24px;
     font-family: 'Archivo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--background);
     color: var(--text);
+
+	display: flex;
+	flex-wrap: wrap;
+}
+body > div {
+	position: relative;
+
+	padding: 1.25rem 1rem 0.25rem;
+	border-bottom: solid 2px var(--text);
+	height: calc(4.5rem + 2px);
+
+	display: flex;
+	column-gap: 1rem;
+
+	background-color: green;
+}
+body > div > div {
+
+	display: flex;
+	column-gap: 0.5rem;
+	align-items: center;
+	justify-content: flex-start;
+	background-color: red;
+}
+
+.cellMark {
+	position: absolute;
+	top: 0.25rem;
+	font-size: 0.75rem;
+}
+
+.double {
+	font-size: 3rem;
+}
+.single {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
 }
 /* Accesibilidad del contenido*/
 
 /* Test fondo */
 
-.fondoCompartido {
-	background-attachment: fixed;
-	background-size: cover;
-}
+/* .fondoCompartido { */
+/* 	background-attachment: fixed; */
+/* 	background-size: cover; */
+/* } */
 
 .hidden,
 [hidden] {
@@ -137,30 +170,6 @@ body {
     position: absolute;
     white-space: nowrap;
     width: 1px;
-}
-/* Estilos del botón de skip */
-a.skip-menu {
-    left: -999px;
-    position: absolute;
-    top: auto;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    z-index: -999;
-}
-a.skip-menu:focus,
-a.skip-menu:active {
-    color: var(--background);
-    background-color: var(--primary);
-    left: unset;
-    top: unset;
-    width: unset;
-    height: unset;
-    overflow: unset;
-    margin: 1rem;
-    padding: 0.5rem 1.5rem;
-    font-size: 1em;
-    z-index: 999;
 }
 @media (prefers-reduced-motion: reduce) {
     /* Bloquea movimiento y animaciones */
