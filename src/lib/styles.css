@@ -109,17 +109,22 @@ body {
     font-family: 'Archivo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.4rem;
     background-color: var(--background);
-    color: var(--text);
-
     display: flex;
     flex-wrap: wrap;
 }
-
 body > * {
+    --color-overlay: var(var(--text));
+    --img-url: url('https://plus.unsplash.com/premium_photo-1687653092046-885dbce02bd4?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+
+    background: #ffffff55 var(--img-url);
+    background-attachment: fixed;
+    background-size: cover;
+
     position: relative;
-    flex: 1;
+    /* flex: 1; */
     min-height: calc(4.5rem + 2px);
-    border-bottom: solid 2px var(--text);
+    border-bottom: solid 2px var(--color-overlay, var(--text));
+    color: var(--color-overlay, var(--text));
     padding: 1.25rem 1rem 0.25rem 0.25rem;
 }
 
@@ -131,6 +136,10 @@ body > * {
     width: max-content;
 }
 
+.highlight {
+    display: flex;
+    gap: 0.3rem;
+}
 .double {
     font-size: 3rem;
     line-height: 1;
@@ -141,15 +150,10 @@ body > * {
     align-items: flex-start;
     min-width: max-content;
 }
+.break {
+    width: min-content;
+}
 /* Accesibilidad del contenido*/
-
-/* Test fondo */
-
-/* .fondoCompartido { */
-/* 	background-attachment: fixed; */
-/* 	background-size: cover; */
-/* } */
-
 .hidden,
 [hidden] {
     display: none !important;
@@ -164,7 +168,6 @@ body > * {
     width: 1px;
 }
 @media (prefers-reduced-motion: reduce) {
-    /* Bloquea movimiento y animaciones */
     *,
     *::before,
     *::after {
