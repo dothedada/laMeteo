@@ -152,6 +152,14 @@ picture button {
     cursor: zoom-in;
     color: var(--background);
 }
+.topRow button:focus-visible,
+.newLocation:focus-visible,
+picture button:focus-visible {
+    outline: solid 2px var(--text);
+}
+picture button:focus-visible {
+    outline-offset: -8px;
+}
 
 .topRow {
     position: absolute;
@@ -174,9 +182,6 @@ picture button {
     color: var(--background);
     background-color: var(--text);
 }
-.topRow button:focus-visible {
-    outline: solid 1px var(--text);
-}
 
 .highlight {
     display: flex;
@@ -194,6 +199,25 @@ picture button {
 }
 .break {
     width: min-content;
+}
+
+.newLocation {
+    padding: 0;
+    background: var(--text);
+    color: var(--background);
+    font-size: 1.5rem;
+    font-weight: 900;
+    aspect-ratio: 1 / 2;
+    border: solid 2px var(--text);
+    border-left: none;
+    border-radius: 0 calc(2.25rem + 1px) calc(2.25rem + 1px) 0;
+}
+.newLocation:hover {
+    color: var(--text);
+    background-color: var(--background);
+}
+.newLocation:focus-visible {
+    outline-offset: 4px;
 }
 /* Accesibilidad del contenido*/
 .hidden,
