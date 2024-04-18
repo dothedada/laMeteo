@@ -128,12 +128,33 @@ body > * {
     padding: 1.25rem 1rem 0.25rem 0.25rem;
 }
 
+h2 {
+    font-weight: 900;
+}
+
 .topRow {
     position: absolute;
     line-height: 1;
     top: 0.25rem;
     font-size: 0.75rem;
     width: max-content;
+    z-index: 10;
+    font-weight: 600;
+}
+
+.topRow button {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    padding: 0.25rem 0.5rem;
+    transform: translate(-0.5rem, -0.25rem);
+}
+.topRow button:hover {
+    color: var(--background);
+    background-color: var(--text);
+}
+.topRow button:focus-visible {
+    outline: solid 1px var(--text);
 }
 
 .highlight {
