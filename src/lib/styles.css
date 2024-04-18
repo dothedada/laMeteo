@@ -55,7 +55,7 @@ html {
 *::before {
     margin: 0;
     padding: 0;
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 /* Tipografía */
 h1,
@@ -65,7 +65,6 @@ h4,
 p {
     text-wrap: balance;
     font-size: 1rem;
-    line-height: 1.5rem;
 }
 b,
 strong {
@@ -108,46 +107,39 @@ img {
 /* Secciones */
 body {
     font-family: 'Archivo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.4rem;
     background-color: var(--background);
     color: var(--text);
 
-	display: flex;
-	flex-wrap: wrap;
-}
-body > div {
-	position: relative;
-
-	padding: 1.25rem 1rem 0.25rem;
-	border-bottom: solid 2px var(--text);
-	height: calc(4.5rem + 2px);
-
-	display: flex;
-	column-gap: 1rem;
-
-	background-color: green;
-}
-body > div > div {
-
-	display: flex;
-	column-gap: 0.5rem;
-	align-items: center;
-	justify-content: flex-start;
-	background-color: red;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.cellMark {
-	position: absolute;
-	top: 0.25rem;
-	font-size: 0.75rem;
+body > * {
+    position: relative;
+    flex: 1;
+    min-height: calc(4.5rem + 2px);
+    border-bottom: solid 2px var(--text);
+    padding: 1.25rem 1rem 0.25rem 0.25rem;
+}
+
+.topRow {
+    position: absolute;
+    line-height: 1;
+    top: 0.25rem;
+    font-size: 0.75rem;
+    width: max-content;
 }
 
 .double {
-	font-size: 3rem;
+    font-size: 3rem;
+    line-height: 1;
 }
 .single {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: max-content;
 }
 /* Accesibilidad del contenido*/
 

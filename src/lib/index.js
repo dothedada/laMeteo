@@ -15,8 +15,8 @@ import makeWeatherObject from './wetherCard';
 // c- crear el css
 // d-
 
-const img = document.createElement('img');
-document.body.append(img);
+// const img = document.createElement('img');
+// document.body.append(img);
 
 // getCordsFromLocation('NY')
 //     .then((location) => getWeather(location))
