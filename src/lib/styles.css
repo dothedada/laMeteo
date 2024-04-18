@@ -118,6 +118,7 @@ body > * {
 
     background: #ffffff55 var(--img-url);
     background-attachment: fixed;
+    background-position: center;
     background-size: cover;
 
     position: relative;
@@ -130,6 +131,26 @@ body > * {
 
 h2 {
     font-weight: 900;
+}
+
+picture {
+    padding: 0;
+}
+img {
+    border-left: solid 2px var(--text);
+    border-right: solid 2px var(--text);
+    height: calc(4.5rem + 2px);
+}
+picture button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: none;
+    border: none;
+    cursor: zoom-in;
+    color: var(--background);
 }
 
 .topRow {
