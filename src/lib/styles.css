@@ -35,7 +35,7 @@
         url('/src/assets/fonts/Archivo-Black.woff') format('woff');
 }
 :root {
-    --text: #212121; 
+    --text: #212121;
     --background: hsl(53, 40%, 96%);
 }
 html {
@@ -63,8 +63,13 @@ p {
     font-size: 1rem;
 }
 b,
-strong {
-    font-weight: 700;
+strong,
+.strong {
+    font-weight: 600;
+}
+.superstrong,
+h2 {
+    font-weight: 900;
 }
 a,
 button {
@@ -113,6 +118,26 @@ body {
         var(--text) 10px
     );
 }
+
+.newLocation {
+    padding: 0;
+    background: var(--text);
+    color: var(--background);
+    font-size: 1.5rem;
+    font-weight: 900;
+    aspect-ratio: 1;
+    border: solid 2px var(--text);
+    border-left: none;
+}
+.newLocation:hover {
+    color: var(--text);
+    background-color: var(--background);
+}
+.newLocation:focus-visible {
+    outline: solid 4px green;
+    outline-offset: -12px;
+}
+
 body > * {
     --overlay: var(--_bk-overlay, hsl(0 0 100%, 1));
     --color-overlay: var(--_color, var(--text));
@@ -124,9 +149,8 @@ body > * {
     color: var(--color-overlay, var(--text));
     padding: 1.25rem 1rem 0.25rem 0.25rem;
 
-
     background: linear-gradient(var(--overlay), var(--overlay)), var(--img-url);
-    background-color: var(--background); 
+    background-color: var(--background);
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
@@ -135,10 +159,6 @@ body > * {
     --_img: url('https://plus.unsplash.com/premium_photo-1687653092046-885dbce02bd4?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     --_color: red;
     --_bk-overlay: hsl(0 100% 50% / 0.5);
-}
-
-h2 {
-    font-weight: 900;
 }
 
 picture {
@@ -186,30 +206,10 @@ picture button:focus-visible {
     background-color: var(--text);
 }
 
-.newLocation {
-    padding: 0;
-    background: var(--text);
-    color: var(--background);
-    font-size: 1.5rem;
-    font-weight: 900;
-    aspect-ratio: 1 / 2;
-    border: solid 2px var(--text);
-    border-left: none;
-    border-radius: 0 calc(2.25rem + 1px) calc(2.25rem + 1px) 0;
-}
-.newLocation:hover {
-    color: var(--text);
-    background-color: var(--background);
-}
-.newLocation:focus-visible {
-    outline-offset: 4px;
-}
 .topRow button:focus-visible,
-.newLocation:focus-visible,
 picture button:focus-visible {
     outline: solid 2px var(--text);
 }
-
 
 .sectionEnd {
     border-right: solid 1px var(--text);
