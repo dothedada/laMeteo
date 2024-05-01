@@ -9,11 +9,38 @@ import {
 
 import makeWeatherObject from './wetherCard';
 
-// NOTE:
+// TODO:
+// 1- Ventana de dialogo de locacion
 // a- Cálculo de parámetros para la interfase (temperatura, Dif temperatura con percepcion, hora del día, probabilidad de lluvia...)
 // b- crear la estructura de tarjetas
-// c- crear el css
 // d-
+//
+//
+
+const modal = document.querySelector('#manageLocation')
+document.querySelectorAll('.locationBTN').forEach(button => {
+    button.addEventListener('click', () => {
+        const insertPosition = button.getAttribute('data-position')
+        console.log(insertPosition)
+        modal.showModal()
+    })
+})
+
+const imgModal = document.querySelector('#zoomImage')
+document.querySelectorAll('.zoomBTN').forEach(button => {
+    button.addEventListener('click', () => {
+        imgModal.showModal()
+    })
+
+})
+
+document.querySelectorAll('dialog .close').forEach(button => {
+    button.addEventListener('click', () => {
+        console.log('carajo')
+        modal.close()
+        imgModal.close()
+    })
+})
 
 // const img = document.createElement('img');
 // document.body.append(img);

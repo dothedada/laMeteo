@@ -108,7 +108,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     min-height: 100vh;
-    align-content: flex-start;
+    align-content: center;
 
     background: repeating-linear-gradient(
         -45deg,
@@ -123,11 +123,12 @@ body {
     padding: 0;
     background: var(--text);
     color: var(--background);
-    font-size: 1.5rem;
+    font-size: 3rem;
     font-weight: 900;
     aspect-ratio: 1;
-    border: solid 2px var(--text);
-    border-left: none;
+    border: solid 1px var(--text);
+    border-bottom: solid 3px var(--text);
+    border-top: none;
 }
 .newLocation:hover {
     color: var(--text);
