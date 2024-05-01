@@ -119,6 +119,21 @@ body {
     );
 }
 
+button {
+    background: var(--text);
+    color: var(--background);
+    border: solid 1px var(--text);
+
+}
+button:hover {
+    color: var(--text);
+    background-color: var(--background);
+}
+button:focus-visible {
+    outline: solid 2px red;
+    outline-offset: -4px;
+}
+
 .newLocation {
     padding: 0;
     background: var(--text);
@@ -126,7 +141,6 @@ body {
     font-size: 3rem;
     font-weight: 900;
     aspect-ratio: 1;
-    border: solid 1px var(--text);
     border-bottom: solid 3px var(--text);
     border-top: none;
 }
@@ -135,7 +149,7 @@ body {
     background-color: var(--background);
 }
 .newLocation:focus-visible {
-    outline: solid 4px green;
+    outline: solid 4px red;
     outline-offset: -12px;
 }
 
@@ -165,7 +179,7 @@ body > * {
 picture {
     padding: 0;
 }
-img {
+picture > img {
     border-left: solid 1px var(--text);
     border-right: solid 1px var(--text);
     height: calc(4.5rem + 2px);
@@ -180,7 +194,12 @@ picture button {
     background: none;
     border: none;
     cursor: zoom-in;
+    text-decoration: underline;
+    font-weight: 600;
     color: var(--background);
+}
+picture button:hover {
+    background: none;
 }
 picture button:focus-visible {
     outline-offset: -8px;
@@ -198,6 +217,7 @@ picture button:focus-visible {
 .topRow button {
     background: none;
     border: none;
+    color: var(--text);
     text-decoration: underline;
     padding: 0.25rem 0.5rem;
     transform: translate(-0.5rem, -0.25rem);
@@ -205,11 +225,6 @@ picture button:focus-visible {
 .topRow button:hover {
     color: var(--background);
     background-color: var(--text);
-}
-
-.topRow button:focus-visible,
-picture button:focus-visible {
-    outline: solid 2px var(--text);
 }
 
 .sectionEnd {
@@ -235,6 +250,64 @@ picture button:focus-visible {
 
 .break {
     width: min-content;
+}
+
+/* Cuadros de dialogo*/
+::backdrop {
+    background-color: hsl(0 0 0 / 0.3);
+    backdrop-filter: blur(3px);
+}
+dialog {
+    position: relative;
+    box-sizing: border-box;
+    border: solid 3px var(--text);
+}
+dialog .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+dialog button {
+    padding: 0.2rem 0.5rem;
+}
+
+#manageLocation {
+    padding: 3.5rem 2rem 2rem;
+    width: min(80%, calc(2rem + 600px));
+}
+#manageLocation div {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    width: min(100%, 600px);
+}
+#deviceLocation {
+    width: 100%;
+}
+#manageLocation input {
+    min-width: 100px;
+    flex: 1;
+}
+#manageLocation input:focus {
+    outline: solid 4px red;
+    outline-offset: -2px;
+}
+#setLocation {
+    margin: 2rem 0 0;
+    width: 100%;
+}
+
+#zoomImage {
+    padding: 0;
+    color: var(--background);
+    background: var(--text);
+    text-align: center;
+}
+#zoomImage a {
+    color: var(--background);
+}
+#zoomImage a:hover {
+    color: red;
 }
 
 .hidden,
