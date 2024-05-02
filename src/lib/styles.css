@@ -228,7 +228,7 @@ picture button:focus-visible {
 }
 
 .sectionEnd {
-    border-right: solid 1px var(--text);
+    border-right: solid 1px var(--_bk-overlay);
 }
 
 .highlight {

@@ -204,8 +204,26 @@ const makeWeatherCards = async (cardInfo) => {
         weatherSpans('índice calor', 'break'),
     );
 
-    const condition = weatherDivs(id, 'break')
-    condition.textContent = today.condition
+    const condition = weatherDivs(id, 'break');
+    condition.textContent = today.condition;
+
+    const waterFalling = weatherDivs(id, 'single');
+    const rain = weatherSpans(`${today.rain}% lluvia`)
+    const snow = weatherSpans(`${today.snow}% nieve`)
+    waterFalling.appendChild(rain)
+    if (+today.snow > 0) waterFalling.appendChild(snow)
+
+    const atmosphere = weatherDivs(id, 'single')
+    atmosphere.append(
+        weatherSpans(`${today.uv} radiación U.V.`),
+        weatherSpans(`${today.airCuality} calidad aire`)
+    )
+
+    const moon = weatherDivs(id, 'single sectionEnd')
+    moon.append(
+        weatherSpans(`${today.moon_illumination} iluminación lunar`),
+        weatherSpans(`${today.moon}`),
+    )
 
     document.body.append(
         location,
@@ -213,7 +231,10 @@ const makeWeatherCards = async (cardInfo) => {
         dayMinMax,
         currentFeel,
         currentHeat,
-        condition
+        condition,
+        waterFalling,
+        atmosphere,
+        moon
     );
 };
 
