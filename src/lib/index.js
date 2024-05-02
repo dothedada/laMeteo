@@ -113,7 +113,6 @@ const testWeather = {
         },
         condition: 'Sunny',
         rain: 0,
-        uv: 11,
         moon: 'Waning Crescent',
     },
 };
@@ -121,6 +120,37 @@ const testWeather = {
 const removeWeatherDivs = (id) => {
     const divs = document.querySelectorAll(`[data-id="${id}"]`);
     divs.forEach((element) => element.remove());
+};
+
+
+const getUVtext = (uvIndex) => {
+    const uvRecomendations = [
+        'no hay radiación UV',
+        'no necesitas protección',
+        'no necesitas protección',
+        'te recomendamos usar protección',
+        'te recomendamos usar protección',
+        'te recomendamos usar protección',
+        'es necesario usar protección',
+        'es necesario usar protección',
+        'mantente a la sombra',
+        'mantente a la sombra',
+        'mantente a la sombra',
+        '¡NO SALGAS!',
+    ];
+    return `índice U.V. de ${uvIndex}, ${uvRecomendations[uvIndex]}`;
+};
+
+const airCualityText = (airCualityIndex) => {
+    const airCualityDescription = [
+        'Buena calidad del aire',
+        'Calidad del aire aceptable',
+        'Aire poco saludable para las personas más sensibles',
+        'Aire poco saludable',
+        'El aire no es saludable',
+        'El aire es tóxico',
+    ];
+    return airCualityDescription[airCualityIndex + 1];
 };
 
 const weatherDivs = (locationID, CSSclass) => {
@@ -141,7 +171,7 @@ const weatherSpans = (content, CSSclass) => {
 const makeWeatherCards = async (cardInfo) => {
     if (!cardInfo.hasWeather) return;
 
-    const today = cardInfo.today;
+    const { today } = cardInfo;
 
     const id = `${cardInfo.location}-${Math.floor(Math.random() * new Date().getTime()).toString(26)}`;
 
@@ -208,22 +238,22 @@ const makeWeatherCards = async (cardInfo) => {
     condition.textContent = today.condition;
 
     const waterFalling = weatherDivs(id, 'single');
-    const rain = weatherSpans(`${today.rain}% lluvia`)
-    const snow = weatherSpans(`${today.snow}% nieve`)
-    waterFalling.appendChild(rain)
-    if (+today.snow > 0) waterFalling.appendChild(snow)
+    const rain = weatherSpans(`${today.rain}% lluvia`);
+    const snow = weatherSpans(`${today.snow}% nieve`);
+    waterFalling.appendChild(rain);
+    if (+today.snow > 0) waterFalling.appendChild(snow);
 
-    const atmosphere = weatherDivs(id, 'single')
+    const atmosphere = weatherDivs(id, 'single');
     atmosphere.append(
-        weatherSpans(`${today.uv} radiación U.V.`),
-        weatherSpans(`${today.airCuality} calidad aire`)
-    )
+        weatherSpans(getUVtext(+today.uv)),
+        weatherSpans(airCualityText(today.airCuality)),
+    );
 
-    const moon = weatherDivs(id, 'single sectionEnd')
+    const moon = weatherDivs(id, 'single sectionEnd');
     moon.append(
         weatherSpans(`${today.moon_illumination} iluminación lunar`),
         weatherSpans(`${today.moon}`),
-    )
+    );
 
     document.body.append(
         location,
@@ -234,9 +264,10 @@ const makeWeatherCards = async (cardInfo) => {
         condition,
         waterFalling,
         atmosphere,
-        moon
+        moon,
     );
 };
+
 
 makeWeatherCards(testWeather);
 
@@ -252,12 +283,3 @@ makeWeatherCards(testWeather);
 //         // img.setAttribute('alt', photo.alt.es);
 //     });
 
-// US - EPA standard.
-// 1 means Good
-// 2 means Moderate
-// 3 means Unhealthy for sensitive group
-// 4 means Unhealthy
-// 5 means Very Unhealthy
-// 6 means Hazardous
-//
-//
