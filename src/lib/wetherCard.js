@@ -11,6 +11,8 @@ const makeWeatherObject = ({ createCard, info }) => {
         location: info.location.name,
         region: info.location.region,
         country: info.location.country,
+        // lat: info.location.lat,
+        // long: info.location.lon,
 
         today: {
             temp: {

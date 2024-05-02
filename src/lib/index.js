@@ -68,7 +68,14 @@ document.querySelector('#deviceLocation').addEventListener('click', () => {
 // // const img = document.createElement('img');
 // // document.body.append(img);
 //
-// getCordsFromLocation('NY')
+// getIPlocation()
+//     .then((location) => getWeather(location))
+//     .then((info) => makeWeatherObject(info))
+//     .then((card) => {
+//         console.log(JSON.stringify(card, null, 2));
+//         // getImage(`${card.today.condition}-${card.country}`);
+//     })
+// getCordsFromLocation('Bogota')
 //     .then((location) => getWeather(location))
 //     .then((info) => makeWeatherObject(info))
 //     .then((card) => {
