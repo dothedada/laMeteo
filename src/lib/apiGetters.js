@@ -33,7 +33,6 @@ const getWeather = async (location) => {
     const [lat, lon] = location;
     const weatherKey = '897a00842abe4196a0330347240904';
     const weatherURL = 'https://api.weatherapi.com/v1/forecast.json?';
-    console.log(lat, lon);
     const weatherRequest = `${weatherURL}key=${weatherKey}&q=${lat},${lon}&days=2&aqi=yes&alerts=no`;
     try {
         const request = await fetch(weatherRequest, { mode: 'cors' });

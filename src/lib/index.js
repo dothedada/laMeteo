@@ -48,21 +48,29 @@ document.querySelectorAll('dialog .close').forEach((button) => {
 
 document.querySelector('#deviceLocation').addEventListener('click', () => {
     getDeviceCoords()
-        .then(
-            (location) => {
-                modal.close();
-                return getWeather(location);
-            },
-            (err) => console.log(err, 'Sin acceso a la ubicación'),
-        )
-        .then(
-            (weatherInfo) => makeWeatherObject(weatherInfo),
-            (err) => console.log(err, 'no es posible obtener info de API'),
-        )
-    .then(cardsInfo => {
+        .then((location) => {
+            modal.close();
+            return getWeather(location);
+        }, err => {
+                console.log(err)
+            })
+        .then((weatherInfo) => makeWeatherObject(weatherInfo))
+        .then((cardsInfo) => {
             // makeWeatherCards(cardsInfo)
-            console.log(JSON.stringify(cardsInfo, null, 2))
-        })
+            console.log(JSON.stringify(cardsInfo, null, 2));
+        });
+});
+
+document.querySelector('#findLocation').addEventListener('click', () => {
+    const place = document.querySelector('#manageLocation input').value;
+
+    getCordsFromLocation(place)
+        .then((cords) => getWeather(cords))
+        .then((weatherInfo) => makeWeatherObject(weatherInfo))
+        .then((cardsInfo) => {
+            // makeWeatherCards(cardsInfo)
+            console.log(JSON.stringify(cardsInfo, null, 2));
+        });
 });
 
 // // const img = document.createElement('img');

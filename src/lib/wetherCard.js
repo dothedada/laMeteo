@@ -26,7 +26,7 @@ const makeWeatherObject = ({ createCard, info }) => {
             rain: forecastDay[0].day.daily_chance_of_rain,
             snow: forecastDay[0].day.daily_will_it_snow,
             uv: current.uv,
-            // airCuality: current.air_quality['us-epa-index'],
+            airCuality: current.air_quality['us-epa-index'],
             moon: forecastDay[0].astro.moon_phase,
             moon_illumination: forecastDay[0].astro.moon_illumination,
 
