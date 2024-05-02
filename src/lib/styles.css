@@ -275,25 +275,22 @@ dialog button {
     padding: 3.5rem 2rem 2rem;
     width: min(80%, calc(2rem + 600px));
 }
-#manageLocation div {
+#manageLocation form {
     display: flex;
     flex-wrap: wrap;
-    row-gap: 0.5rem;
-    width: min(100%, 600px);
+    row-gap: 2.5rem;
 }
-#deviceLocation {
-    width: 100%;
-}
+
 #manageLocation input {
-    min-width: 100px;
     flex: 1;
 }
+
 #manageLocation input:focus {
     outline: solid 4px red;
     outline-offset: -2px;
 }
-#setLocation {
-    margin: 2rem 0 0;
+
+#deviceLocation {
     width: 100%;
 }
 
