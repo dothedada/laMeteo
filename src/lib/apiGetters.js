@@ -14,7 +14,7 @@ const getDeviceCoords = () =>
             (cor) => resolve([cor.coords.latitude, cor.coords.longitude]),
             (err) => reject(Error(err)),
         );
-    });
+    }).catch(getIPlocation);
 
 const getCordsFromLocation = async (location) => {
     try {
@@ -34,6 +34,7 @@ const getWeather = async (location) => {
     const weatherKey = '897a00842abe4196a0330347240904';
     const weatherURL = 'https://api.weatherapi.com/v1/forecast.json?';
     const weatherRequest = `${weatherURL}key=${weatherKey}&q=${lat},${lon}&days=2&aqi=yes&alerts=no`;
+
     try {
         const request = await fetch(weatherRequest, { mode: 'cors' });
         const weatherInfo = await request.json();

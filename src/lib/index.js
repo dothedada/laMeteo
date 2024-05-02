@@ -23,10 +23,10 @@ import makeWeatherObject from './wetherCard';
 //
 
 const modal = document.querySelector('#manageLocation');
+let insertPosition
 document.querySelectorAll('.locationBTN').forEach((button) => {
     button.addEventListener('click', () => {
-        const insertPosition = button.getAttribute('data-position');
-        console.log(insertPosition);
+        insertPosition = button.getAttribute('data-position');
         modal.showModal();
     });
 });
@@ -40,49 +40,32 @@ document.querySelectorAll('.zoomBTN').forEach((button) => {
 
 document.querySelectorAll('dialog .close').forEach((button) => {
     button.addEventListener('click', () => {
-        console.log('carajo');
         modal.close();
         imgModal.close();
     });
 });
 
-document.querySelector('#deviceLocation').addEventListener('click', () => {
-    getDeviceCoords()
-        .then((location) => {
-            modal.close();
-            return getWeather(location);
-        }, err => {
-                console.log(err)
-            })
-        .then((weatherInfo) => makeWeatherObject(weatherInfo))
-        .then((cardsInfo) => {
-            // makeWeatherCards(cardsInfo)
-            console.log(JSON.stringify(cardsInfo, null, 2));
-        });
-});
+const stream = (form, place) => {
+    const locationGetter = form ? getCordsFromLocation : getDeviceCoords;
+        console.log(insertPosition);
 
-document.querySelector('#findLocation').addEventListener('click', () => {
-    const place = document.querySelector('#manageLocation input').value;
-
-    getCordsFromLocation(place)
+    locationGetter(place)
         .then((cords) => getWeather(cords))
         .then((weatherInfo) => makeWeatherObject(weatherInfo))
         .then((cardsInfo) => {
             // makeWeatherCards(cardsInfo)
             console.log(JSON.stringify(cardsInfo, null, 2));
         });
+};
+
+document.querySelector('#deviceLocation').addEventListener('click', () => {
+    stream(false);
 });
 
-// // const img = document.createElement('img');
-// // document.body.append(img);
-//
-// getIPlocation()
-//     .then((location) => getWeather(location))
-//     .then((info) => makeWeatherObject(info))
-//     .then((card) => {
-//         console.log(JSON.stringify(card, null, 2));
-//         // getImage(`${card.today.condition}-${card.country}`);
-//     })
+document.querySelector('#findLocation').addEventListener('click', () => {
+    stream(true, document.querySelector('#manageLocation input').value);
+});
+
 // getCordsFromLocation('Bogota')
 //     .then((location) => getWeather(location))
 //     .then((info) => makeWeatherObject(info))
@@ -90,10 +73,10 @@ document.querySelector('#findLocation').addEventListener('click', () => {
 //         console.log(JSON.stringify(card, null, 2));
 //         // getImage(`${card.today.condition}-${card.country}`);
 //     })
-// .then((photo) => {
-//     img.setAttribute('src', photo.url);
-//     img.setAttribute('alt', photo.alt.es);
-// });
+//     .then((photo) => {
+//         // img.setAttribute('src', photo.url);
+//         // img.setAttribute('alt', photo.alt.es);
+//     });
 
 // US - EPA standard.
 // 1 means Good
