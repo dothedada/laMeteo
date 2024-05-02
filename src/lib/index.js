@@ -1,6 +1,5 @@
 import './styles.css';
 import {
-    getIPlocation,
     getDeviceCoords,
     getCordsFromLocation,
     getWeather,
@@ -19,11 +18,12 @@ import makeWeatherObject from './wetherCard';
 // 3- pasar datos de edicion de tarjetas
 // 4- almacenar en localstorage las locaciones buscadas
 // 5- quitar tarjetas
-//
-//
 
 const modal = document.querySelector('#manageLocation');
-let insertPosition
+const imgModal = document.querySelector('#zoomImage');
+let insertPosition;
+
+// Dialog functions
 document.querySelectorAll('.locationBTN').forEach((button) => {
     button.addEventListener('click', () => {
         insertPosition = button.getAttribute('data-position');
@@ -31,29 +31,28 @@ document.querySelectorAll('.locationBTN').forEach((button) => {
     });
 });
 
-const imgModal = document.querySelector('#zoomImage');
 document.querySelectorAll('.zoomBTN').forEach((button) => {
     button.addEventListener('click', () => {
         imgModal.showModal();
     });
 });
 
-document.querySelectorAll('dialog .close').forEach((button) => {
-    button.addEventListener('click', () => {
-        modal.close();
-        imgModal.close();
-    });
+const closeDialog = () =>
+    document.querySelectorAll('dialog').forEach((dialog) => dialog.close());
+
+document.querySelectorAll('.close').forEach((button) => {
+    button.addEventListener('click', closeDialog);
 });
 
 const stream = (form, place) => {
     const locationGetter = form ? getCordsFromLocation : getDeviceCoords;
-        console.log(insertPosition);
+    console.log(insertPosition);
 
     locationGetter(place)
         .then((cords) => getWeather(cords))
         .then((weatherInfo) => makeWeatherObject(weatherInfo))
         .then((cardsInfo) => {
-            // makeWeatherCards(cardsInfo)
+            // makeWeatherCards(cardInfo)
             console.log(JSON.stringify(cardsInfo, null, 2));
         });
 };
@@ -63,8 +62,113 @@ document.querySelector('#deviceLocation').addEventListener('click', () => {
 });
 
 document.querySelector('#findLocation').addEventListener('click', () => {
-    stream(true, document.querySelector('#manageLocation input').value);
+    const locationName = document.querySelector('#manageLocation input').value;
+    if (!locationName) return;
+    stream(true, locationName);
 });
+
+const testWeather = {
+    hasWeather: true,
+    location: 'Gondolo',
+    region: 'Guera',
+    country: 'Chad',
+    today: {
+        temp: {
+            current: 42,
+            min: 30,
+            max: 42,
+            feels: 43.1,
+            heatInd: 37.5,
+        },
+        condition: 'Sunny',
+        rain: 0,
+        uv: 10,
+        airCuality: 2,
+        moon: 'Waning Crescent',
+        moon_illumination: 44,
+        nextHour: {
+            temp: 39.6,
+            rain: 0,
+            snow: 0,
+            condition: 'Sunny',
+        },
+        next2Hours: {
+            temp: 40.7,
+            rain: 0,
+            snow: 0,
+            condition: 'Sunny',
+        },
+        next3Hours: {
+            temp: 41.3,
+            rain: 0,
+            snow: 0,
+            condition: 'Sunny',
+        },
+    },
+    tomorrow: {
+        temp: {
+            min: 31.8,
+            max: 43.1,
+            avg: 37.6,
+        },
+        condition: 'Sunny',
+        rain: 0,
+        uv: 11,
+        moon: 'Waning Crescent',
+    },
+};
+
+const removeWeatherDivs = (ids) => {
+    const divs = document.querySelectorAll(`[data-id="${ids}"]`)
+    divs.forEach(element => element.remove())
+}
+
+const weatherDivs = (locationID, CSSclass) => {
+    const div = document.createElement('div');
+    div.setAttribute('data-id', locationID);
+    if (CSSclass) div.className = CSSclass;
+
+    return div;
+};
+
+const makeWeatherCards = async (cardInfo) => {
+    if (!cardInfo.hasWeather) return;
+
+    const id = `${Math.floor(Math.random() * new Date().getTime()).toString(26)}-${cardInfo.location}`;
+
+    const location = weatherDivs(id);
+    const name = document.createElement('h2');
+    // name.className = "break"
+    name.textContent = `${cardInfo.location}\n${cardInfo.country}`;
+    const nameDescription = document.createElement('span');
+    nameDescription.className = 'sr-only';
+    nameDescription.textContent = 'La siguiente corresponde a ';
+
+    const editLocation = document.createElement('div');
+    editLocation.className = 'topRow';
+    const changeBTN = document.createElement('button');
+    changeBTN.type = 'button';
+    changeBTN.className = 'locationBTN';
+    changeBTN.textContent = 'Cambiar';
+    changeBTN.addEventListener('click', () => {
+        insertPosition = `substitution_${id}`;
+        modal.showModal();
+    })
+    const deleteBTN = document.createElement('button');
+    deleteBTN.type = 'button';
+    deleteBTN.textContent = 'Borrar';
+    deleteBTN.addEventListener('click', () => {
+        removeWeatherDivs(id)
+
+    } )
+    editLocation.append(changeBTN, deleteBTN);
+
+    location.append(nameDescription, name, editLocation);
+
+    document.body.append(location);
+};
+
+makeWeatherCards(testWeather);
 
 // getCordsFromLocation('Bogota')
 //     .then((location) => getWeather(location))
@@ -85,3 +189,5 @@ document.querySelector('#findLocation').addEventListener('click', () => {
 // 4 means Unhealthy
 // 5 means Very Unhealthy
 // 6 means Hazardous
+//
+//
