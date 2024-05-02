@@ -109,6 +109,10 @@ body {
     flex-wrap: wrap;
     min-height: 100vh;
     align-content: center;
+    max-width: 1200px;
+    padding: 1rem;
+    margin-inline: auto;
+
 
     background: repeating-linear-gradient(
         -45deg,
