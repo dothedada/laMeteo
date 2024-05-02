@@ -118,31 +118,50 @@ const testWeather = {
     },
 };
 
-const removeWeatherDivs = (ids) => {
-    const divs = document.querySelectorAll(`[data-id="${ids}"]`)
-    divs.forEach(element => element.remove())
-}
+const removeWeatherDivs = (id) => {
+    const divs = document.querySelectorAll(`[data-id="${id}"]`);
+    divs.forEach((element) => element.remove());
+};
 
 const weatherDivs = (locationID, CSSclass) => {
     const div = document.createElement('div');
     div.setAttribute('data-id', locationID);
-    if (CSSclass) div.className = CSSclass;
+    div.className = CSSclass ? `${CSSclass} ${locationID}` : locationID;
 
     return div;
+};
+const weatherSpans = (content, CSSclass) => {
+    const span = document.createElement('span');
+    if (CSSclass) span.className = CSSclass;
+    span.textContent = content;
+
+    return span;
 };
 
 const makeWeatherCards = async (cardInfo) => {
     if (!cardInfo.hasWeather) return;
 
-    const id = `${Math.floor(Math.random() * new Date().getTime()).toString(26)}-${cardInfo.location}`;
+    const today = cardInfo.today;
+
+    const id = `${cardInfo.location}-${Math.floor(Math.random() * new Date().getTime()).toString(26)}`;
+
+    const localStyle = document.createElement('style');
+    localStyle.textContent = `.${id} {
+    --_img: url('https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fsiliconbeach-media.s3.amazonaws.com%2Flegacy%2Fblog%2Fuploads%2F2013%2F02%2FDr-Evil-google.jpg&f=1&nofb=1&ipt=26c46abd5f7a4fd0b84ec7c3a61e792081cc1cbc0cc4b92a257b0cbb2105141a&ipo=images');
+    --_color: red;
+    --_bk-overlay: hsl(0 100% 50% / 0.5);
+}
+`;
+    document.head.appendChild(localStyle);
 
     const location = weatherDivs(id);
     const name = document.createElement('h2');
     // name.className = "break"
     name.textContent = `${cardInfo.location}\n${cardInfo.country}`;
-    const nameDescription = document.createElement('span');
-    nameDescription.className = 'sr-only';
-    nameDescription.textContent = 'La siguiente corresponde a ';
+    const nameDescription = weatherSpans(
+        'La siguiente información corresponde a ',
+        'sr-only',
+    );
 
     const editLocation = document.createElement('div');
     editLocation.className = 'topRow';
@@ -153,19 +172,49 @@ const makeWeatherCards = async (cardInfo) => {
     changeBTN.addEventListener('click', () => {
         insertPosition = `substitution_${id}`;
         modal.showModal();
-    })
+    });
     const deleteBTN = document.createElement('button');
     deleteBTN.type = 'button';
     deleteBTN.textContent = 'Borrar';
     deleteBTN.addEventListener('click', () => {
-        removeWeatherDivs(id)
-
-    } )
+        removeWeatherDivs(id);
+    });
     editLocation.append(changeBTN, deleteBTN);
 
     location.append(nameDescription, name, editLocation);
 
-    document.body.append(location);
+    const current = weatherDivs(id, 'double');
+    current.textContent = `${today.temp.current}°`;
+
+    const dayMinMax = weatherDivs(id, 'single');
+    dayMinMax.append(
+        weatherSpans(`${today.temp.min}° min`),
+        weatherSpans(`${today.temp.max}° max`),
+    );
+
+    const currentFeel = weatherDivs(id, 'highlight');
+    currentFeel.append(
+        weatherSpans(`${today.temp.feels}°`, 'double'),
+        weatherSpans('sensación térmica', 'break'),
+    );
+
+    const currentHeat = weatherDivs(id, 'highlight');
+    currentHeat.append(
+        weatherSpans(`${today.temp.heatInd}°`, 'double'),
+        weatherSpans('índice calor', 'break'),
+    );
+
+    const condition = weatherDivs(id, 'break')
+    condition.textContent = today.condition
+
+    document.body.append(
+        location,
+        current,
+        dayMinMax,
+        currentFeel,
+        currentHeat,
+        condition
+    );
 };
 
 makeWeatherCards(testWeather);
