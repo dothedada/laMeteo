@@ -57,13 +57,14 @@ const renderWeather = (form, place) => {
         .then(async (cardInfo) => {
             const weatherCard = cardInfo
             weatherCard.imageData = await getImage(
-                `${weatherCard.today.condition}-${weatherCard.time}-${weatherCard.country}`,
+                'Duck'
+                // `${weatherCard.today.condition}-${weatherCard.time}-${weatherCard.country}`,
             );
             makeWeatherCards(weatherCard);
         });
 };
 
-renderWeather(false);
+renderWeather(true, 'cali');
 
 document.querySelector('#deviceLocation').addEventListener('click', () => {
     renderWeather(false);

@@ -45,57 +45,78 @@ const makeWeatherObject = ({ createCard, info }) => {
             : today[0].hour[hour + until][key];
 
     return {
-        hasWeather: true,
-
-        time: getTime(hour),
-        location: info.location.name,
-        region: info.location.region,
-        country: info.location.country,
-
-        today: {
-            temp: {
-                current: current.temp_c,
-                min: today[0].day.mintemp_c,
-                max: today[0].day.maxtemp_c,
-                feels: current.feelslike_c,
-                heatInd: today[0].hour[hour].heatindex_c,
-            },
-            condition: current.condition.text,
-            rain: today[0].day.daily_chance_of_rain,
-            snow: today[0].day.daily_will_it_snow,
-            uv: getUVtext[current.uv],
-            ac: airDescription[current.air_quality['us-epa-index'] - 1],
-
-            nextHour: {
-                temp: getHourForecast(1, 'temp_c'),
-                rain: getHourForecast(1, 'chance_of_rain'),
-                snow: getHourForecast(1, 'chance_of_snow'),
-                condition: getHourForecast(1, 'condition').text,
-            },
-            next2Hours: {
-                temp: getHourForecast(2, 'temp_c'),
-                rain: getHourForecast(2, 'chance_of_rain'),
-                snow: getHourForecast(2, 'chance_of_snow'),
-                condition: getHourForecast(2, 'condition').text,
-            },
-            next3Hours: {
-                temp: getHourForecast(3, 'temp_c'),
-                rain: getHourForecast(3, 'chance_of_rain'),
-                snow: getHourForecast(3, 'chance_of_snow'),
-                condition: getHourForecast(3, 'condition').text,
-            },
+        time: {
+            value: getTime(hour),
         },
 
-        tomorrow: {
-            temp: {
-                min: today[1].day.mintemp_c,
-                max: today[1].day.maxtemp_c,
-                avg: today[1].day.avgtemp_c,
-            },
-            condition: today[1].day.condition.text,
-            rain: today[1].day.daily_chance_of_rain,
-            snow: today[1].day.daily_will_it_snow,
-        },
+        now: [
+            [
+                info.location.name,
+                `${info.location.region} ${info.location.country}`,
+            ],
+            `${current.temp_c}°`,
+            [
+                `${today[0].day.mintemp_c}° min`,
+                `${today[0].day.maxtemp_c}° max`,
+            ],
+            [`${current.feelslike_c}°`, 'Sensación térmica'],
+            [`${today[0].hour[hour].heatindex_c}°`, 'Índice calor'],
+            current.condition.text,
+            [
+                `${today[0].day.daily_chance_of_rain}% lluvia`,
+                today[0].day.daily_will_it_snow
+                    ? `${today[0].day.daily_will_it_snow}% nieve`
+                    : '',
+            ],
+            [
+                getUVtext[current.uv],
+                airDescription[current.air_quality['us-epa-index'] - 1],
+            ],
+        ],
+        nextHour: [
+            `${getHourForecast(1, 'temp_c')}°`,
+            getHourForecast(1, 'condition').text,
+            [
+                `${getHourForecast(1, 'chance_of_rain')}% lluvia`,
+                getHourForecast(1, 'chance_of_snow')
+                    ? `${getHourForecast(1, 'chance_of_snow')}% nieve`
+                    : '',
+            ],
+        ],
+        next2Hours: [
+            `${getHourForecast(2, 'temp_c')}°`,
+            getHourForecast(2, 'condition').text,
+            [
+                `${getHourForecast(2, 'chance_of_rain')}% lluvia`,
+                getHourForecast(2, 'chance_of_snow')
+                    ? `${getHourForecast(2, 'chance_of_snow')}% nieve`
+                    : '',
+            ],
+        ],
+        next3Hours: [
+            `${getHourForecast(3, 'temp_c')}°`,
+            getHourForecast(3, 'condition').text,
+            [
+                `${getHourForecast(3, 'chance_of_rain')}% lluvia`,
+                getHourForecast(3, 'chance_of_snow')
+                    ? `${getHourForecast(3, 'chance_of_snow')}% nieve`
+                    : '',
+            ],
+        ],
+        tomorrow: [
+            `${today[1].day.avgtemp_c}°`,
+            [
+                `${today[1].day.mintemp_c}° min`,
+                `${today[1].day.maxtemp_c}° max`,
+            ],
+            today[1].day.condition.text,
+            [
+                `${today[1].day.daily_chance_of_rain}% lluvia`,
+                today[1].day.daily_will_it_snow
+                    ? `${today[1].day.daily_will_it_snow}% nieve`
+                    : '',
+            ],
+        ],
     };
 };
 
