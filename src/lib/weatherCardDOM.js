@@ -70,6 +70,8 @@ const makeWeatherCards = async (cardInfo) => {
 `;
     document.head.appendChild(localStyle);
 
+    console.log(JSON.stringify(cardInfo, null, 2))
+
     const location = weatherDivs(id);
     const name = document.createElement('h2');
     // name.className = "break"
