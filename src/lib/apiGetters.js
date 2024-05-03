@@ -57,14 +57,12 @@ const getImage = async (searchPrompt) => {
         );
         const response = await request.json();
         return {
-            alt: {
-                en: response.alt_description.replace('-', ' '),
-                es: response.alternative_slugs.es
-                    .split('-')
-                    .slice(0, -1)
-                    .join(' '),
-            },
+            alt: response.alternative_slugs.es
+                .split('-')
+                .slice(0, -1)
+                .join(' '),
             url: response.urls.regular,
+            thumb: response.urls.thumb,
             html: `<a href="${response.user.links.html}?utm_source=feel_the_weather&utm_medium=referral">${response.user.name}</a> / <a href="https://unsplash.com/?utm_source=feel_the_weather&utm_medium=referral">Unsplash</a>`,
         };
     } catch (err) {
@@ -72,9 +70,4 @@ const getImage = async (searchPrompt) => {
     }
 };
 
-export {
-    getDeviceCoords,
-    getCordsFromLocation,
-    getWeather,
-    getImage,
-};
+export { getDeviceCoords, getCordsFromLocation, getWeather, getImage };
