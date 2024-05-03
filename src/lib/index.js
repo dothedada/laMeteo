@@ -57,7 +57,7 @@ const renderWeather = (form, place) => {
         .then(async (cardInfo) => {
             const weatherCard = cardInfo
             weatherCard.imageData = await getImage(
-                `${weatherCard.today.condition}-${getTime()}-${weatherCard.country}`,
+                `${weatherCard.today.condition}-${weatherCard.time}-${weatherCard.country}`,
             );
             makeWeatherCards(weatherCard);
         });

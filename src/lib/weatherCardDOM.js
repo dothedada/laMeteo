@@ -1,27 +1,3 @@
-
-const getTime = () => {
-    const hour = new Date().getHours();
-    if (hour < 6) return 'noche';
-    if (hour < 8) return 'madrugada';
-    if (hour < 12) return 'mañana';
-    if (hour < 14) return 'medio día';
-    if (hour < 18) return 'tarde';
-    if (hour < 19) return 'anochecer';
-    return 'noche';
-};
-
-const airCualityText = (airCualityIndex) => {
-    const airCualityDescription = [
-        'Buena calidad del aire',
-        'Calidad del aire aceptable',
-        'Aire poco saludable para las personas más sensibles',
-        'Aire poco saludable',
-        'El aire no es saludable',
-        'El aire es tóxico',
-    ];
-    return airCualityDescription[airCualityIndex + 1];
-};
-
 const weatherDivs = (locationID, CSSclass) => {
     const div = document.createElement('div');
     div.setAttribute('data-id', locationID);
@@ -117,7 +93,7 @@ const makeWeatherCards = async (cardInfo) => {
     const currentAtmosphere = weatherDivs(id, 'single sectionEnd');
     currentAtmosphere.append(
         weatherSpans(today.uv),
-        weatherSpans(airCualityText(today.airCuality)),
+        weatherSpans(today.ac),
     );
 
     const nextHourTemp = weatherDivs(id);
@@ -225,4 +201,3 @@ const makeWeatherCards = async (cardInfo) => {
 };
 
 export default makeWeatherCards;
-export { getTime };
