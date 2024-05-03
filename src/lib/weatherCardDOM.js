@@ -1,20 +1,3 @@
-const getUVtext = (uvIndex) => {
-    const uvRecomendations = [
-        'no hay radiación UV',
-        'no necesitas protección',
-        'no necesitas protección',
-        'te recomendamos usar protección',
-        'te recomendamos usar protección',
-        'te recomendamos usar protección',
-        'es necesario usar protección',
-        'es necesario usar protección',
-        'mantente a la sombra',
-        'mantente a la sombra',
-        'mantente a la sombra',
-        '¡NO SALGAS!',
-    ];
-    return `índice U.V. de ${uvIndex}, ${uvRecomendations[uvIndex]}`;
-};
 
 const getTime = () => {
     const hour = new Date().getHours();
@@ -133,7 +116,7 @@ const makeWeatherCards = async (cardInfo) => {
 
     const currentAtmosphere = weatherDivs(id, 'single sectionEnd');
     currentAtmosphere.append(
-        weatherSpans(getUVtext(+today.uv)),
+        weatherSpans(today.uv),
         weatherSpans(airCualityText(today.airCuality)),
     );
 

@@ -1,7 +1,20 @@
-const forecast = (from, until, weatherKey, weatherInfo) =>
-    from + until >= 24
-        ? weatherKey[1].hour[from + until - 24][weatherInfo]
-        : weatherKey[0].hour[from + until][weatherInfo];
+const getUVtext = (uvIndex) => {
+    const uvRecomendations = [
+        'no hay radiación UV',
+        'no necesitas protección',
+        'no necesitas protección',
+        'te recomendamos usar protección',
+        'te recomendamos usar protección',
+        'te recomendamos usar protección',
+        'es necesario usar protección',
+        'es necesario usar protección',
+        'mantente a la sombra',
+        'mantente a la sombra',
+        'mantente a la sombra',
+        '¡NO SALGAS!',
+    ];
+    return `índice U.V. de ${uvIndex}, ${uvRecomendations[uvIndex]}`;
+};
 
 const makeWeatherObject = ({ createCard, info }) => {
     if (!createCard) return { hasWeather: createCard, message: info };
@@ -9,6 +22,11 @@ const makeWeatherObject = ({ createCard, info }) => {
     const now = new Date().getHours();
     const { current } = info;
     const today = info.forecast.forecastday;
+
+    const getHourForecast = (until, weatherKey, weatherInfo) =>
+        now + until >= 24
+            ? weatherKey[1].hour[now + until - 24][weatherInfo]
+            : weatherKey[0].hour[now + until][weatherInfo];
 
     return {
         hasWeather: true,
@@ -28,26 +46,26 @@ const makeWeatherObject = ({ createCard, info }) => {
             condition: current.condition.text,
             rain: today[0].day.daily_chance_of_rain,
             snow: today[0].day.daily_will_it_snow,
-            uv: current.uv,
+            uv: getUVtext(current.uv),
             airCuality: current.air_quality['us-epa-index'],
 
             nextHour: {
-                temp: forecast(now, 1, today, 'temp_c'),
-                rain: forecast(now, 1, today, 'chance_of_rain'),
-                snow: forecast(now, 1, today, 'chance_of_snow'),
-                condition: forecast(now, 1, today, 'condition').text,
+                temp: getHourForecast(1, today, 'temp_c'),
+                rain: getHourForecast(1, today, 'chance_of_rain'),
+                snow: getHourForecast(1, today, 'chance_of_snow'),
+                condition: getHourForecast(1, today, 'condition').text,
             },
             next2Hours: {
-                temp: forecast(now, 2, today, 'temp_c'),
-                rain: forecast(now, 2, today, 'chance_of_rain'),
-                snow: forecast(now, 2, today, 'chance_of_snow'),
-                condition: forecast(now, 2, today, 'condition').text,
+                temp: getHourForecast(2, today, 'temp_c'),
+                rain: getHourForecast(2, today, 'chance_of_rain'),
+                snow: getHourForecast(2, today, 'chance_of_snow'),
+                condition: getHourForecast(2, today, 'condition').text,
             },
             next3Hours: {
-                temp: forecast(now, 3, today, 'temp_c'),
-                rain: forecast(now, 3, today, 'chance_of_rain'),
-                snow: forecast(now, 3, today, 'chance_of_snow'),
-                condition: forecast(now, 3, today, 'condition').text,
+                temp: getHourForecast(3, today, 'temp_c'),
+                rain: getHourForecast(3, today, 'chance_of_rain'),
+                snow: getHourForecast(3, today, 'chance_of_snow'),
+                condition: getHourForecast(3, today, 'condition').text,
             },
         },
 
