@@ -301,6 +301,27 @@ const makeWeatherCards = async (cardInfo) => {
     if (+today.next3Hours.snow > 0)
         next3HoursWatter.appendChild(next3HoursSnow);
 
+    const tomorrowTemp = weatherDivs(id);
+    tomorrowTemp.append(
+        weatherSpans('Mañana', 'topRow'),
+        weatherSpans(`${tomorrow.temp.avg}°`, 'double'),
+    );
+
+    const tomorrowMinMax = weatherDivs(id, 'single');
+    tomorrowMinMax.append(
+        weatherSpans(`${tomorrow.temp.min}° min`),
+        weatherSpans(`${tomorrow.temp.max}° max`),
+    );
+
+    const tomorrowCondition = weatherDivs(id, 'break');
+    tomorrowCondition.textContent = tomorrow.condition;
+
+    const tomorrowWatter = weatherDivs(id, 'single');
+    const tomorrowRain = weatherSpans(`${tomorrow.rain}% lluvia`);
+    const tomorrowSnow = weatherSpans(`${tomorrow.snow}% nieve`);
+    tomorrowWatter.appendChild(tomorrowRain);
+    if (+tomorrow.snow > 0) tomorrowWatter.appendChild(tomorrowSnow);
+
     document.body.append(
         location,
         current,
@@ -320,6 +341,10 @@ const makeWeatherCards = async (cardInfo) => {
         next3HoursTemp,
         next3HoursCondition,
         next3HoursWatter,
+        tomorrowTemp,
+        tomorrowMinMax,
+        tomorrowCondition,
+        tomorrowWatter,
     );
 };
 
