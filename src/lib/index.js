@@ -7,18 +7,20 @@ import {
 } from './apiGetters';
 
 import makeWeatherObject from './wetherObject';
-import makeWeatherCards from './weatherCardDOM';
+import makeWeatherCards, { getTime } from './weatherCardDOM';
 
 // TODO:
-// 1- creación de tajetas en JS
-// 1.0- creacion elementos del dom a partir de indo del API
+// 1. revisar la secuencia de apis, el objeto que sale de una y el que ingresa en otra
 // 1.1- asignación de color en relación a las diferencias de temperatura
 // 1.2- resaltar la temperatura mas alta luego de promedio mayor a 14
 // 1.3- resaltar la temperatura más baja luego de promedio menor a 14
+// 1.4- Ajustar scope de funciones de botones para agregar o eliminar o editar
+// 1.5- ajustar el punto de inserción
 // 2- limital el máximo de tarjetas
 // 3- pasar datos de edicion de tarjetas
 // 4- almacenar en localstorage las locaciones buscadas
 // 5- quitar tarjetas
+// 6- limpiar código
 
 const modal = document.querySelector('#manageLocation');
 const imgModal = document.querySelector('#zoomImage');
@@ -53,8 +55,11 @@ const renderWeather = (form, place) => {
         .then((cords) => getWeather(cords))
         .then((weatherInfo) => makeWeatherObject(weatherInfo))
         .then(async (cardInfo) => {
-            cardInfo.imageData = await getImage(`${cardInfo.today.condition}-${cardInfo.country}`);
-            makeWeatherCards(cardInfo)
+            const weatherCard = cardInfo
+            weatherCard.imageData = await getImage(
+                `${weatherCard.today.condition}-${getTime()}-${weatherCard.country}`,
+            );
+            makeWeatherCards(weatherCard);
         });
 };
 
@@ -74,4 +79,3 @@ const removeWeatherDivs = (id) => {
     const divs = document.querySelectorAll(`[data-id="${id}"]`);
     divs.forEach((element) => element.remove());
 };
-
