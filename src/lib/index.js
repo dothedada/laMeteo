@@ -122,7 +122,6 @@ const removeWeatherDivs = (id) => {
     divs.forEach((element) => element.remove());
 };
 
-
 const getUVtext = (uvIndex) => {
     const uvRecomendations = [
         'no hay radiación UV',
@@ -171,15 +170,15 @@ const weatherSpans = (content, CSSclass) => {
 const makeWeatherCards = async (cardInfo) => {
     if (!cardInfo.hasWeather) return;
 
-    const { today } = cardInfo;
+    const { today, tomorrow } = cardInfo;
 
     const id = `${cardInfo.location}-${Math.floor(Math.random() * new Date().getTime()).toString(26)}`;
 
     const localStyle = document.createElement('style');
     localStyle.textContent = `.${id} {
     --_img: url('https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fsiliconbeach-media.s3.amazonaws.com%2Flegacy%2Fblog%2Fuploads%2F2013%2F02%2FDr-Evil-google.jpg&f=1&nofb=1&ipt=26c46abd5f7a4fd0b84ec7c3a61e792081cc1cbc0cc4b92a257b0cbb2105141a&ipo=images');
-    --_color: red;
-    --_bk-overlay: hsl(0 100% 50% / 0.5);
+    --_color: black;
+    --_bk-overlay: hsl(0 0 50% / 0.5);
 }
 `;
     document.head.appendChild(localStyle);
@@ -234,26 +233,73 @@ const makeWeatherCards = async (cardInfo) => {
         weatherSpans('índice calor', 'break'),
     );
 
-    const condition = weatherDivs(id, 'break');
-    condition.textContent = today.condition;
+    const currentCondition = weatherDivs(id, 'break');
+    currentCondition.textContent = today.condition;
 
-    const waterFalling = weatherDivs(id, 'single');
-    const rain = weatherSpans(`${today.rain}% lluvia`);
-    const snow = weatherSpans(`${today.snow}% nieve`);
-    waterFalling.appendChild(rain);
-    if (+today.snow > 0) waterFalling.appendChild(snow);
+    const currentWatter = weatherDivs(id, 'single');
+    const currentRain = weatherSpans(`${today.rain}% lluvia`);
+    const currentSnow = weatherSpans(`${today.snow}% nieve`);
+    currentWatter.appendChild(currentRain);
+    if (+today.snow > 0) currentWatter.appendChild(currentSnow);
 
-    const atmosphere = weatherDivs(id, 'single');
-    atmosphere.append(
+    const currentAtmosphere = weatherDivs(id, 'single');
+    currentAtmosphere.append(
         weatherSpans(getUVtext(+today.uv)),
         weatherSpans(airCualityText(today.airCuality)),
     );
 
-    const moon = weatherDivs(id, 'single sectionEnd');
-    moon.append(
+    const currentMooon = weatherDivs(id, 'single sectionEnd');
+    currentMooon.append(
         weatherSpans(`${today.moon_illumination} iluminación lunar`),
         weatherSpans(`${today.moon}`),
     );
+
+    const nextHourTemp = weatherDivs(id);
+    nextHourTemp.append(
+        weatherSpans('En una hora', 'topRow'),
+        weatherSpans(`${today.nextHour.temp}°`, 'double'),
+    );
+
+    const nextHourCondition = weatherDivs(id, 'break');
+    nextHourCondition.textContent = today.nextHour.condition;
+
+    const nextHourWatter = weatherDivs(id, 'single sectionEnd');
+    const nextHourRain = weatherSpans(`${today.nextHour.rain}% lluvia`);
+    const nextHourSnow = weatherSpans(`${today.nextHour.snow}% nieve`);
+    nextHourWatter.appendChild(nextHourRain);
+    if (+today.nextHour.snow > 0) nextHourWatter.appendChild(nextHourSnow);
+
+    const next2HoursTemp = weatherDivs(id);
+    next2HoursTemp.append(
+        weatherSpans('En dos horas', 'topRow'),
+        weatherSpans(`${today.next2Hours.temp}°`, 'double'),
+    );
+
+    const next2HoursCondition = weatherDivs(id, 'break');
+    next2HoursCondition.textContent = today.next2Hours.condition;
+
+    const next2HoursWatter = weatherDivs(id, 'single sectionEnd');
+    const next2HoursRain = weatherSpans(`${today.next2Hours.rain}% lluvia`);
+    const next2HoursSnow = weatherSpans(`${today.next2Hours.snow}% nieve`);
+    next2HoursWatter.appendChild(next2HoursRain);
+    if (+today.next2Hours.snow > 0)
+        next2HoursWatter.appendChild(next2HoursSnow);
+
+    const next3HoursTemp = weatherDivs(id);
+    next3HoursTemp.append(
+        weatherSpans('En tres horas', 'topRow'),
+        weatherSpans(`${today.next3Hours.temp}°`, 'double'),
+    );
+
+    const next3HoursCondition = weatherDivs(id, 'break');
+    next3HoursCondition.textContent = today.next3Hours.condition;
+
+    const next3HoursWatter = weatherDivs(id, 'single sectionEnd');
+    const next3HoursRain = weatherSpans(`${today.next3Hours.rain}% lluvia`);
+    const next3HoursSnow = weatherSpans(`${today.next3Hours.snow}% nieve`);
+    next3HoursWatter.appendChild(next3HoursRain);
+    if (+today.next3Hours.snow > 0)
+        next3HoursWatter.appendChild(next3HoursSnow);
 
     document.body.append(
         location,
@@ -261,13 +307,21 @@ const makeWeatherCards = async (cardInfo) => {
         dayMinMax,
         currentFeel,
         currentHeat,
-        condition,
-        waterFalling,
-        atmosphere,
-        moon,
+        currentCondition,
+        currentWatter,
+        currentAtmosphere,
+        currentMooon,
+        nextHourTemp,
+        nextHourCondition,
+        nextHourWatter,
+        next2HoursTemp,
+        next2HoursCondition,
+        next2HoursWatter,
+        next3HoursTemp,
+        next3HoursCondition,
+        next3HoursWatter,
     );
 };
-
 
 makeWeatherCards(testWeather);
 
@@ -282,4 +336,3 @@ makeWeatherCards(testWeather);
 //         // img.setAttribute('src', photo.url);
 //         // img.setAttribute('alt', photo.alt.es);
 //     });
-
