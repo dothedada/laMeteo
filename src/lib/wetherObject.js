@@ -25,8 +25,6 @@ const makeWeatherObject = ({ createCard, info }) => {
             snow: forecastDay[0].day.daily_will_it_snow,
             uv: current.uv,
             airCuality: current.air_quality['us-epa-index'],
-            moon: forecastDay[0].astro.moon_phase,
-            moon_illumination: forecastDay[0].astro.moon_illumination,
 
             nextHour: {
                 temp:
@@ -95,7 +93,6 @@ const makeWeatherObject = ({ createCard, info }) => {
             condition: forecastDay[1].day.condition.text,
             rain: forecastDay[1].day.daily_chance_of_rain,
             snow: forecastDay[1].day.daily_will_it_snow,
-            moon: forecastDay[1].astro.moon_phase,
         },
     };
 };
