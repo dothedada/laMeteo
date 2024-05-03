@@ -45,13 +45,11 @@ const makeWeatherObject = ({ createCard, info }) => {
             : today[0].hour[hour + until][key];
 
     return {
-        time: {
-            value: getTime(hour),
-        },
+        time: getTime(hour),
 
         now: [
             [
-                info.location.name,
+                `${info.location.name}`,
                 `${info.location.region} ${info.location.country}`,
             ],
             `${current.temp_c}°`,

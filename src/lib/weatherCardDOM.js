@@ -13,15 +13,14 @@ const weatherSpans = (content, CSSclass) => {
     return span;
 };
 
-const makeWeatherCards = (weatherInfo) => {
+const makeWeatherCards = (weatherInfo, insertionPoint) => {
     if (!weatherInfo) return;
 
     const { now, nextHour, next2Hours, next3Hours, tomorrow } = weatherInfo;
-    // console.log(JSON.stringify(weatherInfo, null, 4));
     const id = `${now[0][0]}_${new Date().getTime().toString(26)}`;
-
     let locationTitle = true;
-    const renderCard = (cardData, insertionPoint, renderPicture = false) => {
+
+    const renderCard = (cardData, renderPicture = false) => {
         let card;
 
         if (locationTitle) {
@@ -50,20 +49,18 @@ const makeWeatherCards = (weatherInfo) => {
             editLocation.append(changeLocationBTN, deleteLocationBTN);
 
             card.append(title, editLocation);
-
-            locationTitle = false;
         } else if (renderPicture) {
             card = document.createElement('picture');
 
             const image = document.createElement('img');
             image.src = cardData.thumb;
             image.alt = cardData.alt;
-            
+
             const imgBTN = document.createElement('button');
             imgBTN.type = 'button';
             imgBTN.className = 'zoomBTN';
             imgBTN.textContent = 'zoom';
-            
+
             card.append(image, imgBTN);
         } else if (typeof cardData !== 'object') {
             card = /°/.test(cardData)
@@ -81,7 +78,14 @@ const makeWeatherCards = (weatherInfo) => {
             card.append(weatherSpans(cardData[0]), weatherSpans(cardData[1]));
         }
 
-        insertionPoint.append(card);
+        const cardInsertion = locationTitle
+            ? insertionPoint
+            : document.body.querySelectorAll(`.${id}`)[
+                  document.body.querySelectorAll(`.${id}`).length - 1
+              ].nextElementSibling;
+
+        document.body.insertBefore(card, cardInsertion);
+        locationTitle = false;
     };
 
     const localStyle = document.createElement('style');
@@ -93,12 +97,12 @@ const makeWeatherCards = (weatherInfo) => {
 
     document.head.appendChild(localStyle);
 
-    now.forEach((cardData) => renderCard(cardData, document.body));
-    nextHour.forEach((cardData) => renderCard(cardData, document.body));
-    next2Hours.forEach((cardData) => renderCard(cardData, document.body));
-    next3Hours.forEach((cardData) => renderCard(cardData, document.body));
-    tomorrow.forEach((cardData) => renderCard(cardData, document.body));
-    renderCard(weatherInfo.imageData, document.body, true)
+    now.forEach((cardData) => renderCard(cardData));
+    nextHour.forEach((cardData) => renderCard(cardData));
+    next2Hours.forEach((cardData) => renderCard(cardData));
+    next3Hours.forEach((cardData) => renderCard(cardData));
+    tomorrow.forEach((cardData) => renderCard(cardData));
+    renderCard(weatherInfo.imageData, true);
 };
 
 export default makeWeatherCards;

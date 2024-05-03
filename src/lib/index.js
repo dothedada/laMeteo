@@ -47,24 +47,26 @@ document.querySelectorAll('.close').forEach((button) => {
     button.addEventListener('click', closeDialog);
 });
 
-const renderWeather = (form, place) => {
-    const locationGetter = form ? getCordsFromLocation : getDeviceCoords;
+const renderWeather = (form, insertionPoint, location) => {
+    const locationGetter =
+        form && location ? getCordsFromLocation : getDeviceCoords;
     // console.log(insertPosition);
-
-    locationGetter(place)
+    locationGetter(location)
         .then((cords) => getWeather(cords))
         .then((weatherInfo) => makeWeatherObject(weatherInfo))
         .then(async (cardInfo) => {
-            const weatherCard = cardInfo
+            const weatherCard = cardInfo;
             weatherCard.imageData = await getImage(
-                'Duck'
-                // `${weatherCard.today.condition}-${weatherCard.time}-${weatherCard.country}`,
+                `${weatherCard.now[5]}-${weatherCard.time}-${weatherCard.now[0][0]}`,
             );
-            makeWeatherCards(weatherCard);
+            makeWeatherCards(weatherCard, insertionPoint);
         });
 };
 
-renderWeather(true, 'cali');
+renderWeather(
+    false,
+    document.body.querySelector('.locationBTN').nextElementSibling,
+);
 
 document.querySelector('#deviceLocation').addEventListener('click', () => {
     renderWeather(false);
