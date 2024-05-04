@@ -5,7 +5,6 @@ import {
     getWeather,
     getImage,
 } from './apiGetters';
-
 import makeWeatherObject from './wetherObject';
 import makeWeatherCards from './weatherCardDOM';
 
@@ -24,29 +23,61 @@ import makeWeatherCards from './weatherCardDOM';
 
 const modal = document.querySelector('#manageLocation');
 const imgModal = document.querySelector('#zoomImage');
-let insertPosition;
+let insertion = 'head';
+
+const getInsertionPoint = (place = 'head') => {
+    const defaultPoints = document.body.querySelectorAll('.locationBTN');
+    if (/head/.test(place)) return defaultPoints[0].nextElementSibling;
+    if (/tail/.test(place)) return defaultPoints[defaultPoints.length - 1];
+    return document.body.querySelector(place);
+};
 
 const openZoom = (weatherId) => {
-    console.log(weatherId)
+    // console.log(weatherId);
+
     imgModal.showModal();
 };
 
-const removeCards = (cardsId) => {
+const removeCards = (weatherId) => {
     document
-        .querySelectorAll(`[data-id=${cardsId}]`)
+        .querySelectorAll(`[data-id=${weatherId}]`)
         .forEach((card) => card.remove());
 };
 
 const selectLocationDialog = (cardsId) => {
-    insertPosition = cardsId;
+    insertion = cardsId;
     modal.showModal();
+};
+
+const renderWeather = (form, insertPoint, location) => {
+    const cords = form && location ? getCordsFromLocation : getDeviceCoords;
+    cords(location)
+        .then((cordsData) => getWeather(cordsData))
+        .then((weatherInfo) => makeWeatherObject(weatherInfo))
+        .then(async (cardInfo) => {
+            const weatherCard = cardInfo;
+
+            weatherCard.imageData = await getImage(
+                `${weatherCard.now[5]}-${weatherCard.time}-${weatherCard.now[0][0]}`,
+            );
+            makeWeatherCards(weatherCard, insertPoint);
+        });
 };
 
 document.body.addEventListener('click', (event) => {
     if (!event.target.closest('button')) return;
-
     const btn = event.target.closest('button');
+
     if (/close/.test(btn.className)) event.target.closest('dialog').close();
+    if (/^find/.test(btn.id)) {
+        const placeName = document.querySelector('input').value;
+        renderWeather(true, getInsertionPoint(insertion), placeName);
+        modal.close();
+    }
+    if (/^device/.test(btn.id)) {
+        renderWeather(false, getInsertionPoint(insertion));
+        modal.close();
+    }
 
     const weatherId = btn.closest('[data-id]')
         ? btn.closest('[data-id]').getAttribute('data-id')
@@ -58,38 +89,4 @@ document.body.addEventListener('click', (event) => {
     if (/zoomBTN/.test(btn.className)) openZoom(weatherId);
 });
 
-const renderWeather = (form, insertionPoint, location) => {
-    const locationGetter =
-        form && location ? getCordsFromLocation : getDeviceCoords;
-    // console.log(insertPosition);
-    locationGetter(location)
-        .then((cords) => getWeather(cords))
-        .then((weatherInfo) => makeWeatherObject(weatherInfo))
-        .then(async (cardInfo) => {
-            const weatherCard = cardInfo;
-            weatherCard.imageData = await getImage(
-                `${weatherCard.now[5]}-${weatherCard.time}-${weatherCard.now[0][0]}`,
-            );
-            makeWeatherCards(weatherCard, insertionPoint);
-        });
-};
-
-renderWeather(
-    true,
-    document.body.querySelector('.locationBTN').nextElementSibling,
-    'buenos aires',
-);
-
-document.querySelector('#deviceLocation').addEventListener('click', () => {
-    renderWeather(false);
-});
-
-document.querySelector('#findLocation').addEventListener('click', () => {
-    const locationName = document.querySelector('#manageLocation input').value;
-    if (!locationName) return;
-    renderWeather(
-        true,
-        document.body.querySelector('.locationBTN').nextElementSibling,
-        locationName,
-    );
-});
+renderWeather(true, getInsertionPoint(), 'Bogota');
