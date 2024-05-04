@@ -104,16 +104,12 @@ img {
 body {
     font-family: 'Archivo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.4rem;
-    background-color: var(--background);
     display: flex;
     flex-wrap: wrap;
     min-height: 100vh;
     align-content: center;
-    max-width: 1200px;
-    padding: 1rem;
-    margin-inline: auto;
-
-
+    padding: 1rem 2rem 1rem 0;
+    border-left: solid 1rem var(--text);
     background: repeating-linear-gradient(
         -45deg,
         var(--background),

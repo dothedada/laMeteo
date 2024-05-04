@@ -26,19 +26,10 @@ const modal = document.querySelector('#manageLocation');
 const imgModal = document.querySelector('#zoomImage');
 let insertPosition;
 
-// Dialog functions
-document.querySelectorAll('.locationBTN').forEach((button) => {
-    button.addEventListener('click', () => {
-        insertPosition = button.getAttribute('data-position');
-        modal.showModal();
-    });
-});
-
-document.querySelectorAll('.zoomBTN').forEach((button) => {
-    button.addEventListener('click', () => {
-        imgModal.showModal();
-    });
-});
+const openZoom = (weatherId) => {
+    console.log(weatherId)
+    imgModal.showModal();
+};
 
 const removeCards = (cardsId) => {
     document
@@ -46,24 +37,25 @@ const removeCards = (cardsId) => {
         .forEach((card) => card.remove());
 };
 
+const selectLocationDialog = (cardsId) => {
+    insertPosition = cardsId;
+    modal.showModal();
+};
+
 document.body.addEventListener('click', (event) => {
     if (!event.target.closest('button')) return;
 
     const btn = event.target.closest('button');
+    if (/close/.test(btn.className)) event.target.closest('dialog').close();
+
     const weatherId = btn.closest('[data-id]')
         ? btn.closest('[data-id]').getAttribute('data-id')
         : 0;
+    if (!weatherId) return;
 
-    if (/removeBTN/.test(btn.className)) removeCards(weatherId)
-    // if (/changeBTN/.test(btn.className)) removeCards(weatherId)
-    // if (/locationBTN/.test(btn.className)) removeCards(weatherId)
-});
-
-const closeDialog = () =>
-    document.querySelectorAll('dialog').forEach((dialog) => dialog.close());
-
-document.querySelectorAll('.close').forEach((button) => {
-    button.addEventListener('click', closeDialog);
+    if (/removeBTN/.test(btn.className)) removeCards(weatherId);
+    if (/locationBTN/.test(btn.className)) selectLocationDialog(weatherId);
+    if (/zoomBTN/.test(btn.className)) openZoom(weatherId);
 });
 
 const renderWeather = (form, insertionPoint, location) => {
@@ -101,8 +93,3 @@ document.querySelector('#findLocation').addEventListener('click', () => {
         locationName,
     );
 });
-
-const removeWeatherDivs = (id) => {
-    const divs = document.querySelectorAll(`[data-id="${id}"]`);
-    divs.forEach((element) => element.remove());
-};

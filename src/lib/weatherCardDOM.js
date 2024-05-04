@@ -46,7 +46,7 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
             const editLocation = document.createElement('div');
             editLocation.className = 'topRow';
             editLocation.append(
-                makeBTN('Cambiar', 'changeBTN'),
+                makeBTN('Cambiar', 'locationBTN'),
                 makeBTN('Borrar', 'removeBTN'),
             );
 
@@ -100,16 +100,26 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
     localStyle.textContent = `.${id} {
         --_img: url(${weatherInfo.imageData.url});
         --_color: black;
-        --_bk-overlay: hsl(0 0 90% / 0.6);
+        --_bk-overlay: hsl(0 0 90% / 0.5);
     }`;
 
     document.head.appendChild(localStyle);
 
-    now.forEach((data, i, { length }) => renderCard(data, i === length - 1));
-    nextHour.forEach((data, i, { length }) => renderCard(data, i === length - 1));
-    next2Hours.forEach((data, i, { length }) => renderCard(data, i === length - 1));
-    next3Hours.forEach((data, i, { length }) => renderCard(data, i === length - 1));
-    tomorrow.forEach((data, i, { length }) => renderCard(data, i === length - 1));
+    now.forEach((data, index, { length }) =>
+        renderCard(data, index === length - 1),
+    );
+    nextHour.forEach((data, index, { length }) =>
+        renderCard(data, index === length - 1),
+    );
+    next2Hours.forEach((data, index, { length }) =>
+        renderCard(data, index === length - 1),
+    );
+    next3Hours.forEach((data, index, { length }) =>
+        renderCard(data, index === length - 1),
+    );
+    tomorrow.forEach((data, index, { length }) =>
+        renderCard(data, index === length - 1),
+    );
     renderCard(weatherInfo.imageData, false, true);
 };
 
