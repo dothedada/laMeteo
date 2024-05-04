@@ -13,49 +13,38 @@ const makeSpan = (content, CSSclass) => {
     return span;
 };
 
-
-const makeBTN = (text, className, callback) => {
+const makeBTN = (text, className) => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = className;
     btn.textContent = text;
-    if (callback) btn.addEventListener('click', callback);
 
     return btn;
 };
 
-const removeCards = (id) => {
-    const cardsId =
-        typeof id === 'string'
-            ? id
-            : id.target.closest('[data-id]').getAttribute('data-id');
-    const divs = document.querySelectorAll(`[data-id=${cardsId}]`);
-    divs.forEach((card) => card.remove());
-};
-
 const makeWeatherCards = (weatherInfo, insertionPoint) => {
-    if (!weatherInfo) return;
+    const id = `${weatherInfo.now[0][0]}_${new Date().getTime().toString(26)}`;
 
-    const { now, nextHour, next2Hours, next3Hours, tomorrow } = weatherInfo;
-    const id = `${now[0][0]}_${new Date().getTime().toString(26)}`;
     let firstCard = true;
-
     const renderCard = (data, renderPicture = false) => {
         let card;
 
         if (firstCard) {
             card = makeDiv(id, 'highlight');
 
-            const location = makeSpan('Este es el clima de', 'sr-only');
             const title = document.createElement('h2');
             title.className = 'single';
-            title.append(location, makeSpan(data[0]), makeSpan(data[1]));
+            title.append(
+                makeSpan('Este es el clima de', 'sr-only'),
+                makeSpan(data[0]),
+                makeSpan(data[1]),
+            );
 
             const editLocation = document.createElement('div');
             editLocation.className = 'topRow';
             editLocation.append(
-                makeBTN('Cambiar', 'locationBTN'),
-                makeBTN('Borrar', 'locationBTN', removeCards),
+                makeBTN('Cambiar', 'changeBTN'),
+                makeBTN('Borrar', 'removeBTN'),
             );
 
             card.append(title, editLocation);
@@ -71,6 +60,7 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
         } else if (typeof data !== 'object') {
             card = /°/.test(data) ? makeDiv(id, 'double') : makeDiv(id);
             card.textContent = data;
+
         } else if (/°$/.test(data[0])) {
             card = makeDiv(id, 'highlight');
             card.append(
@@ -101,11 +91,11 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
 
     document.head.appendChild(localStyle);
 
-    now.forEach((cardData) => renderCard(cardData));
-    nextHour.forEach((cardData) => renderCard(cardData));
-    next2Hours.forEach((cardData) => renderCard(cardData));
-    next3Hours.forEach((cardData) => renderCard(cardData));
-    tomorrow.forEach((cardData) => renderCard(cardData));
+    weatherInfo.now.forEach((cardData) => renderCard(cardData));
+    weatherInfo.nextHour.forEach((cardData) => renderCard(cardData));
+    weatherInfo.next2Hours.forEach((cardData) => renderCard(cardData));
+    weatherInfo.next3Hours.forEach((cardData) => renderCard(cardData));
+    weatherInfo.tomorrow.forEach((cardData) => renderCard(cardData));
     renderCard(weatherInfo.imageData, true);
 };
 

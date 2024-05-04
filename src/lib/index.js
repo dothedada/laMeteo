@@ -7,7 +7,7 @@ import {
 } from './apiGetters';
 
 import makeWeatherObject from './wetherObject';
-import makeWeatherCards, { getTime } from './weatherCardDOM';
+import makeWeatherCards from './weatherCardDOM';
 
 // TODO:
 // 1. revisar la secuencia de apis, el objeto que sale de una y el que ingresa en otra
@@ -40,6 +40,25 @@ document.querySelectorAll('.zoomBTN').forEach((button) => {
     });
 });
 
+const removeCards = (cardsId) => {
+    document
+        .querySelectorAll(`[data-id=${cardsId}]`)
+        .forEach((card) => card.remove());
+};
+
+document.body.addEventListener('click', (event) => {
+    if (!event.target.closest('button')) return;
+
+    const btn = event.target.closest('button');
+    const weatherId = btn.closest('[data-id]')
+        ? btn.closest('[data-id]').getAttribute('data-id')
+        : 0;
+
+    if (/removeBTN/.test(btn.className)) removeCards(weatherId)
+    // if (/changeBTN/.test(btn.className)) removeCards(weatherId)
+    // if (/locationBTN/.test(btn.className)) removeCards(weatherId)
+});
+
 const closeDialog = () =>
     document.querySelectorAll('dialog').forEach((dialog) => dialog.close());
 
@@ -66,7 +85,7 @@ const renderWeather = (form, insertionPoint, location) => {
 renderWeather(
     true,
     document.body.querySelector('.locationBTN').nextElementSibling,
-    'buenos aires'
+    'buenos aires',
 );
 
 document.querySelector('#deviceLocation').addEventListener('click', () => {
