@@ -24,9 +24,10 @@ const makeBTN = (text, className) => {
 
 const makeWeatherCards = (weatherInfo, insertionPoint) => {
     const id = `${weatherInfo.now[0][0]}_${new Date().getTime().toString(26)}`;
+    const { now, nextHour, next2Hours, next3Hours, tomorrow } = weatherInfo;
 
     let firstCard = true;
-    const renderCard = (data, renderPicture = false) => {
+    const renderCard = (data, last, renderPicture = false) => {
         let card;
 
         if (firstCard) {
@@ -60,7 +61,6 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
         } else if (typeof data !== 'object') {
             card = /°/.test(data) ? makeDiv(id, 'double') : makeDiv(id);
             card.textContent = data;
-
         } else if (/°$/.test(data[0])) {
             card = makeDiv(id, 'highlight');
             card.append(
@@ -71,6 +71,9 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
             card = makeDiv(id, 'single');
             card.append(makeSpan(data[0]), makeSpan(data[1]));
         }
+
+        console.log(last);
+        if (last) card.classList.add('sectionEnd');
 
         const cardInsertion = firstCard
             ? insertionPoint
@@ -91,12 +94,12 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
 
     document.head.appendChild(localStyle);
 
-    weatherInfo.now.forEach((cardData) => renderCard(cardData));
-    weatherInfo.nextHour.forEach((cardData) => renderCard(cardData));
-    weatherInfo.next2Hours.forEach((cardData) => renderCard(cardData));
-    weatherInfo.next3Hours.forEach((cardData) => renderCard(cardData));
-    weatherInfo.tomorrow.forEach((cardData) => renderCard(cardData));
-    renderCard(weatherInfo.imageData, true);
+    now.forEach((data, i, { lng }) => renderCard(data, i === lng - 1));
+    nextHour.forEach((data, i, { lng }) => renderCard(data, i === lng - 1));
+    next2Hours.forEach((data, i, { lng }) => renderCard(data, i === lng - 1));
+    next3Hours.forEach((data, i, { lng }) => renderCard(data, i === lng - 1));
+    tomorrow.forEach((data, i, { lng }) => renderCard(data, i === lng - 1));
+    renderCard(weatherInfo.imageData, false, true);
 };
 
 export default makeWeatherCards;
