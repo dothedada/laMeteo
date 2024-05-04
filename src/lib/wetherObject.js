@@ -72,7 +72,7 @@ const makeWeatherObject = ({ createCard, info }) => {
             ],
         ],
         nextHour: [
-            `${getHourForecast(1, 'temp_c')}°`,
+            ['En una hora', `${getHourForecast(1, 'temp_c')}°`],
             getHourForecast(1, 'condition').text,
             [
                 `${getHourForecast(1, 'chance_of_rain')}% lluvia`,
@@ -82,7 +82,7 @@ const makeWeatherObject = ({ createCard, info }) => {
             ],
         ],
         next2Hours: [
-            `${getHourForecast(2, 'temp_c')}°`,
+            ['En dos horas', `${getHourForecast(2, 'temp_c')}°`],
             getHourForecast(2, 'condition').text,
             [
                 `${getHourForecast(2, 'chance_of_rain')}% lluvia`,
@@ -92,7 +92,7 @@ const makeWeatherObject = ({ createCard, info }) => {
             ],
         ],
         next3Hours: [
-            `${getHourForecast(3, 'temp_c')}°`,
+            ['En tres horas', `${getHourForecast(3, 'temp_c')}°`],
             getHourForecast(3, 'condition').text,
             [
                 `${getHourForecast(3, 'chance_of_rain')}% lluvia`,
@@ -102,7 +102,7 @@ const makeWeatherObject = ({ createCard, info }) => {
             ],
         ],
         tomorrow: [
-            `${today[1].day.avgtemp_c}°`,
+            ['Mañana', `${today[1].day.avgtemp_c}°`],
             [
                 `${today[1].day.mintemp_c}° min`,
                 `${today[1].day.maxtemp_c}° max`,
