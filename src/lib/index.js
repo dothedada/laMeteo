@@ -64,8 +64,9 @@ const renderWeather = (form, insertionPoint, location) => {
 };
 
 renderWeather(
-    false,
+    true,
     document.body.querySelector('.locationBTN').nextElementSibling,
+    'buenos aires'
 );
 
 document.querySelector('#deviceLocation').addEventListener('click', () => {
@@ -75,7 +76,11 @@ document.querySelector('#deviceLocation').addEventListener('click', () => {
 document.querySelector('#findLocation').addEventListener('click', () => {
     const locationName = document.querySelector('#manageLocation input').value;
     if (!locationName) return;
-    renderWeather(true, locationName);
+    renderWeather(
+        true,
+        document.body.querySelector('.locationBTN').nextElementSibling,
+        locationName,
+    );
 });
 
 const removeWeatherDivs = (id) => {
