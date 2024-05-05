@@ -43,8 +43,7 @@ const makeWeatherConditionLines = (weatherCondition) => {
         .slice(Math.ceil(weatherWords.length / 2))
         .join(' ');
 
-    return [line1, line2]
-    // return `${line1}\n${line2}`;
+    return [line1, line2];
 };
 
 const makeWeatherObject = ({ createCard, info }) => {
@@ -59,8 +58,12 @@ const makeWeatherObject = ({ createCard, info }) => {
             ? today[1].hour[hour + until - 24][key]
             : today[0].hour[hour + until][key];
 
+
+
     return {
         time: getTime(hour),
+        lat: info.location.lat,
+        lon: info.location.lon,
 
         now: [
             [

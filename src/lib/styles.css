@@ -168,12 +168,6 @@ body > * {
     background-position: center;
     background-size: cover;
 }
-.test {
-    --_img: url('https://plus.unsplash.com/premium_photo-1687653092046-885dbce02bd4?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-    --_color: red;
-    --_bk-overlay: hsl(0 100% 50% / 0.5);
-    --_bk-overlay2: hsl(0 100% 50% / 0.5);
-}
 
 picture {
     padding: 0;

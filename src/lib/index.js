@@ -37,6 +37,7 @@ const removeCards = (weatherId) => {
     document
         .querySelectorAll(`[data-id=${weatherId}]`)
         .forEach((card) => card.remove());
+    localStorage.removeItem(`lameteo_${weatherId}`)
 };
 
 const selectLocationDialog = (cardsId) => {
