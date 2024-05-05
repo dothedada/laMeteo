@@ -25,6 +25,7 @@ const makeBTN = (text, className) => {
 const makeHue = (tempStr) => {
     const minReg = 5; // se elimina el - al número negativo
     const maxReg = 35;
+
     let temp = +tempStr.replace('°', '');
     if (temp < -minReg) temp = -minReg;
     if (temp > maxReg) temp = maxReg;
@@ -37,19 +38,21 @@ const makeHue = (tempStr) => {
     return Math.round(Math.abs(hue));
 };
 
-const makeSat = (perceivedStr, tempStr) => {
+const makePercent = (perceivedStr, tempStr) => {
     const min = 0;
     const max = 10;
-    let diference = Math.abs(
-        +perceivedStr.replace('°', '') - +tempStr.replace('°', ''),
-    ) * 2;
+    const scalingFactor = 2; // para hacer más evidente el cambio de color
+
+    let diference =
+        Math.abs(+perceivedStr.replace('°', '') - +tempStr.replace('°', '')) *
+        scalingFactor;
     if (diference > max) diference = max;
 
     return Math.round((diference / (max - min)) * 100);
 };
 
 const makeColor = (temp, feel, heat) =>
-    `${makeHue(temp)} ${makeSat(feel, temp)}% ${makeSat(heat, temp)}%`;
+    `${makeHue(temp)} ${makePercent(feel, temp)}% ${makePercent(heat, temp) / 2}%`;
 
 const makeWeatherCards = (weatherInfo, insertionPoint) => {
     const id = `${weatherInfo.now[0][0].replace(' ', '-')}_${new Date().getTime().toString(26)}`;
@@ -133,19 +136,6 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
         --_bk-overlay1: hsl(${makeHue(weatherInfo.now[1])} 50% 90% / 1);
         --_bk-overlay2: hsl(${makeHue(weatherInfo.now[1])} 50% 90% / 0.5);
     }`;
-
-    console.log(
-        // weatherInfo.now[1],
-        // weatherInfo.now[3][0],
-        // weatherInfo.now[4][0],
-        makeColor(
-            weatherInfo.now[1],
-            weatherInfo.now[3][0],
-            weatherInfo.now[4][0],
-        ),
-    );
-    // makeColor(weatherInfo.now[1], weatherInfo.now[3][0], weatherInfo.now[4][0]);
-
     document.head.appendChild(localStyle);
 
     now.forEach((data, index, { length }) =>

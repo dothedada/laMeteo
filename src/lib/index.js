@@ -10,15 +10,11 @@ import makeWeatherCards from './weatherCardDOM';
 
 // TODO:
 // 1. revisar la secuencia de apis, el objeto que sale de una y el que ingresa en otra
-// 1.1- asignación de color en relación a las diferencias de temperatura
 // 1.2- resaltar la temperatura mas alta luego de promedio mayor a 14
 // 1.3- resaltar la temperatura más baja luego de promedio menor a 14
-// 1.4- Ajustar scope de funciones de botones para agregar o eliminar o editar
-// 1.5- ajustar el punto de inserción
 // 2- limital el máximo de tarjetas
 // 3- pasar datos de edicion de tarjetas
 // 4- almacenar en localstorage las locaciones buscadas
-// 5- quitar tarjetas
 // 6- limpiar código
 
 const modal = document.querySelector('#manageLocation');

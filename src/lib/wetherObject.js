@@ -9,28 +9,43 @@ const getTime = (hour) => {
 };
 
 const getUVtext = [
-    'UV: 0, no hay radiación',
-    'UV: 1, no necesitas protección',
-    'UV: 2, no necesitas protección',
-    'UV: 3, te recomendamos usar protección',
-    'UV: 4, te recomendamos usar protección',
-    'UV: 5, te recomendamos usar protección',
-    'UV: 6, es necesario usar protección',
-    'UV: 7, es necesario usar protección',
-    'UV: 8, mantente a la sombra',
+    'No hay información sobre U.V.',
+    'UV: 1, minimo de radiación',
+    'UV: 2, normal',
+    'UV: 3, podrías usar bloqueador +30',
+    'UV: 4, es mejor que uses bloqueador',
+    'UV: 5, usa bloqueador +30',
+    'UV: 6, usa bloqueador +50',
+    'UV: 7, usa bloqueador +50',
+    'UV: 8, usa un bloqueador fuerte',
     'UV: 9, mantente a la sombra',
-    'UV: 10, mantente a la sombra',
+    'UV: 10, usa bloqueador y evita salir',
     'UV: 11, ¡NO SALGAS!',
 ];
 
 const airDescription = [
-    'AC: 1, Buena calidad del aire',
-    'AC: 2, Calidad del aire aceptable',
-    'AC: 3, Aire poco saludable para las personas más sensibles',
-    'AC: 4, Aire poco saludable',
-    'AC: 5, El aire no es saludable',
-    'AC: 6, El aire es tóxico',
+    'AC: 1, el aire está bien',
+    'AC: 2, el aire está aceptable',
+    'AC: 3, el aire está poco saludable',
+    'AC: 4, el aire está poco muy saludable',
+    'AC: 5, el aire no es saludable',
+    'AC: 6, el aire está tóxico',
 ];
+
+const makeWeatherConditionLines = (weatherCondition) => {
+    const weatherWords = weatherCondition.split(' ');
+    if (weatherWords.length < 2) return weatherCondition;
+
+    const line1 = weatherWords
+        .slice(0, Math.ceil(weatherWords.length / 2))
+        .join(' ');
+    const line2 = weatherWords
+        .slice(Math.ceil(weatherWords.length / 2))
+        .join(' ');
+
+    return [line1, line2]
+    // return `${line1}\n${line2}`;
+};
 
 const makeWeatherObject = ({ createCard, info }) => {
     if (!createCard) return { hasWeather: createCard, message: info };
@@ -59,7 +74,7 @@ const makeWeatherObject = ({ createCard, info }) => {
             ],
             [`${current.feelslike_c}°`, 'Sensación térmica'],
             [`${today[0].hour[hour].heatindex_c}°`, 'Índice calor'],
-            current.condition.text,
+            makeWeatherConditionLines(current.condition.text),
             [
                 `${today[0].day.daily_chance_of_rain}% lluvia`,
                 today[0].day.daily_will_it_snow
@@ -73,7 +88,7 @@ const makeWeatherObject = ({ createCard, info }) => {
         ],
         nextHour: [
             ['En una hora', `${getHourForecast(1, 'temp_c')}°`],
-            getHourForecast(1, 'condition').text,
+            makeWeatherConditionLines(getHourForecast(1, 'condition').text),
             [
                 `${getHourForecast(1, 'chance_of_rain')}% lluvia`,
                 getHourForecast(1, 'chance_of_snow')
@@ -83,7 +98,7 @@ const makeWeatherObject = ({ createCard, info }) => {
         ],
         next2Hours: [
             ['En dos horas', `${getHourForecast(2, 'temp_c')}°`],
-            getHourForecast(2, 'condition').text,
+            makeWeatherConditionLines(getHourForecast(2, 'condition').text),
             [
                 `${getHourForecast(2, 'chance_of_rain')}% lluvia`,
                 getHourForecast(2, 'chance_of_snow')
@@ -93,7 +108,7 @@ const makeWeatherObject = ({ createCard, info }) => {
         ],
         next3Hours: [
             ['En tres horas', `${getHourForecast(3, 'temp_c')}°`],
-            getHourForecast(3, 'condition').text,
+            makeWeatherConditionLines(getHourForecast(3, 'condition').text),
             [
                 `${getHourForecast(3, 'chance_of_rain')}% lluvia`,
                 getHourForecast(3, 'chance_of_snow')
@@ -107,7 +122,7 @@ const makeWeatherObject = ({ createCard, info }) => {
                 `${today[1].day.mintemp_c}° min`,
                 `${today[1].day.maxtemp_c}° max`,
             ],
-            today[1].day.condition.text,
+            makeWeatherConditionLines(today[1].day.condition.text),
             [
                 `${today[1].day.daily_chance_of_rain}% lluvia`,
                 today[1].day.daily_will_it_snow
