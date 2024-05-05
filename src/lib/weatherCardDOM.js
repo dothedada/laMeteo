@@ -23,7 +23,7 @@ const makeBTN = (text, className) => {
 };
 
 const makeWeatherCards = (weatherInfo, insertionPoint) => {
-    const id = `${weatherInfo.now[0][0]}_${new Date().getTime().toString(26)}`;
+    const id = `${weatherInfo.now[0][0].replace(' ', '-')}_${new Date().getTime().toString(26)}`;
     const { now, nextHour, next2Hours, next3Hours, tomorrow } = weatherInfo;
 
     let firstCard = true;
@@ -86,11 +86,11 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
             sectionTitle = true;
         }
 
+        const siblings = document.body.querySelectorAll(`.${id}`);
+
         const cardInsertion = firstCard
             ? insertionPoint
-            : document.body.querySelectorAll(`.${id}`)[
-                  document.body.querySelectorAll(`.${id}`).length - 1
-              ].nextElementSibling;
+            : siblings[siblings.length - 1].nextElementSibling;
 
         document.body.insertBefore(card, cardInsertion);
         firstCard = false;
@@ -99,7 +99,7 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
     const localStyle = document.createElement('style');
     localStyle.textContent = `.${id} {
         --_img: url(${weatherInfo.imageData.url});
-        --_color: black;
+        --_color: hsl(0, 0%, 13%);
         --_bk-overlay: hsl(0 0 90% / 0.5);
     }`;
 

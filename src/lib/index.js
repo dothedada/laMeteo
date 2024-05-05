@@ -22,21 +22,20 @@ import makeWeatherCards from './weatherCardDOM';
 // 6- limpiar código
 
 const modal = document.querySelector('#manageLocation');
-const imgModal = document.querySelector('#zoomImage');
+// const imgModal = document.querySelector('#zoomImage');
 let insertion = 'head';
 
-const getInsertionPoint = (place = 'head') => {
+const setInsertPoint = (place = 'head') => {
     const defaultPoints = document.body.querySelectorAll('.locationBTN');
     if (/head/.test(place)) return defaultPoints[0].nextElementSibling;
     if (/tail/.test(place)) return defaultPoints[defaultPoints.length - 1];
-    return document.body.querySelector(place);
+    return document.body.querySelector(`.${place}`);
 };
 
-const openZoom = (weatherId) => {
+// const openZoom = (weatherId) => {
     // console.log(weatherId);
-
-    imgModal.showModal();
-};
+    // imgModal.showModal();
+// };
 
 const removeCards = (weatherId) => {
     document
@@ -61,6 +60,10 @@ const renderWeather = (form, insertPoint, location) => {
                 `${weatherCard.now[5]}-${weatherCard.time}-${weatherCard.now[0][0]}`,
             );
             makeWeatherCards(weatherCard, insertPoint);
+        })
+        .then(() => {
+            if (!/head|tail/.test(insertion)) removeCards(insertion);
+            insertion = 'head';
         });
 };
 
@@ -71,11 +74,11 @@ document.body.addEventListener('click', (event) => {
     if (/close/.test(btn.className)) event.target.closest('dialog').close();
     if (/^find/.test(btn.id)) {
         const placeName = document.querySelector('input').value;
-        renderWeather(true, getInsertionPoint(insertion), placeName);
+        renderWeather(true, setInsertPoint(insertion), placeName);
         modal.close();
     }
     if (/^device/.test(btn.id)) {
-        renderWeather(false, getInsertionPoint(insertion));
+        renderWeather(false, setInsertPoint(insertion));
         modal.close();
     }
 
@@ -86,7 +89,7 @@ document.body.addEventListener('click', (event) => {
 
     if (/removeBTN/.test(btn.className)) removeCards(weatherId);
     if (/locationBTN/.test(btn.className)) selectLocationDialog(weatherId);
-    if (/zoomBTN/.test(btn.className)) openZoom(weatherId);
+    // if (/zoomBTN/.test(btn.className)) openZoom(weatherId);
 });
 
-renderWeather(true, getInsertionPoint(), 'Bogota');
+renderWeather(true, setInsertPoint(), 'Bogota');

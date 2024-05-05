@@ -35,7 +35,7 @@
         url('/src/assets/fonts/Archivo-Black.woff') format('woff');
 }
 :root {
-    --text: #212121;
+    --text: hsl(0, 0%, 13%);
     --background: hsl(53, 40%, 96%);
 }
 html {
@@ -109,7 +109,7 @@ body {
     min-height: 100vh;
     align-content: center;
     padding: 1rem 2rem 1rem 0;
-    border-left: solid 1rem var(--text);
+    border-left: solid min(10vw, 74px) var(--text);
     background: repeating-linear-gradient(
         -45deg,
         var(--background),
