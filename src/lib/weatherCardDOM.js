@@ -22,6 +22,37 @@ const makeBTN = (text, className) => {
     return btn;
 };
 
+const makeHue = (tempStr) => {
+    console.log(tempStr, typeof tempStr)
+    const minReg = 0;
+    const maxReg = 35;
+    let temp = +tempStr.replace('°', '');
+    if (temp < -minReg) temp = -minReg;
+    if (temp > maxReg) temp = maxReg;
+    const percent = ((temp + minReg) / (maxReg + minReg)) * 100;
+
+    const minHue = 0;
+    const maxHue = 230;
+    const hue = minHue + (percent / 100) * (maxHue - minHue) - maxHue;
+
+    return Math.round(Math.abs(hue));
+};
+
+console.log(
+    'cero',
+    makeHue('0'),
+    'max',
+    makeHue('60'),
+    'min',
+    makeHue('-90'),
+    'normal',
+    makeHue('15'),
+);
+
+const makeColor = (temp, feel, heat) => {
+    if (temp > 14) hue = 200;
+};
+
 const makeWeatherCards = (weatherInfo, insertionPoint) => {
     const id = `${weatherInfo.now[0][0].replace(' ', '-')}_${new Date().getTime().toString(26)}`;
     const { now, nextHour, next2Hours, next3Hours, tomorrow } = weatherInfo;
@@ -99,7 +130,7 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
     const localStyle = document.createElement('style');
     localStyle.textContent = `.${id} {
         --_img: url(${weatherInfo.imageData.url});
-        --_color: hsl(0, 0%, 13%);
+        --_color: hsl(${makeHue(weatherInfo.now[1])}, 50%, 50%);
         --_bk-overlay: hsl(0 0 90% / 0.5);
     }`;
 
