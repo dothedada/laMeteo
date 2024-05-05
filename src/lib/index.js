@@ -12,9 +12,9 @@ import makeWeatherCards from './weatherCardDOM';
 // 1. revisar la secuencia de apis, el objeto que sale de una y el que ingresa en otra
 // 1.2- resaltar la temperatura mas alta luego de promedio mayor a 14
 // 1.3- resaltar la temperatura más baja luego de promedio menor a 14
-// 2- limital el máximo de tarjetas
+// 2- cargar modal de imagen adecuado
+// 3- mejorar el formulario de edicion de lugares
 // 3- pasar datos de edicion de tarjetas
-// 4- almacenar en localstorage las locaciones buscadas
 // 6- limpiar código
 
 const modal = document.querySelector('#manageLocation');
@@ -91,9 +91,9 @@ document.body.addEventListener('click', (event) => {
 
 const placesInLocal = Object.keys(localStorage);
 if (placesInLocal) {
-    for (let i = 0; i < placesInLocal.length; i += 1) {
+    placesInLocal.forEach((place,index) => {
         setTimeout(() => {
-            getWeather(localStorage.getItem(placesInLocal[i]).split(','))
+            getWeather(localStorage.getItem(place).split(','))
                 .then((weatherInfo) => makeWeatherObject(weatherInfo))
                 .then(async (cardInfo) => {
                     const weatherCard = cardInfo;
@@ -103,8 +103,10 @@ if (placesInLocal) {
                     );
                     makeWeatherCards(weatherCard, setInsertPoint());
                 });
-            localStorage.removeItem(placesInLocal[i])
-        }, 1000 * i);
-    }
+            localStorage.removeItem(place);
+        }, 1000 * index);
+    })
+
+} else {
+    renderWeather(true, setInsertPoint(), 'Bogota');
 }
-// renderWeather(true, setInsertPoint(), 'Bogota');
