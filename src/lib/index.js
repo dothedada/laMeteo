@@ -57,7 +57,7 @@ const renderWeather = (form, insertPoint, location) => {
             const weatherCard = cardInfo;
 
             weatherCard.imageData = await getImage(
-                `${weatherCard.now[5]}-${weatherCard.time}-${weatherCard.now[0][0]}`,
+                `${weatherCard.time}-${weatherCard.now[0][0]}-${weatherCard.now[5]}`,
             );
             makeWeatherCards(weatherCard, insertPoint);
         })

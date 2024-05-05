@@ -154,7 +154,8 @@ button:focus-visible {
 }
 
 body > * {
-    --overlay: var(--_bk-overlay, hsl(0 0 100%, 1));
+    --overlay1: var(--_bk-overlay1, hsl(0 0 100%, 1));
+    --overlay2: var(--_bk-overlay2, hsl(0 0 100%, 1));
     --color-overlay: var(--_color, var(--text));
     --img-url: var(--_img);
 
@@ -164,7 +165,7 @@ body > * {
     color: var(--color-overlay, var(--text));
     padding: 1.25rem 1rem 0.25rem 0.25rem;
 
-    background: linear-gradient(var(--overlay), var(--overlay)), var(--img-url);
+    background: linear-gradient(var(--overlay1), var(--overlay2)), var(--img-url);
     background-color: var(--background);
     background-attachment: fixed;
     background-position: center;
@@ -174,6 +175,7 @@ body > * {
     --_img: url('https://plus.unsplash.com/premium_photo-1687653092046-885dbce02bd4?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     --_color: red;
     --_bk-overlay: hsl(0 100% 50% / 0.5);
+    --_bk-overlay2: hsl(0 100% 50% / 0.5);
 }
 
 picture {

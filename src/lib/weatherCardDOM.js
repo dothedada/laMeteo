@@ -23,8 +23,7 @@ const makeBTN = (text, className) => {
 };
 
 const makeHue = (tempStr) => {
-    console.log(tempStr, typeof tempStr)
-    const minReg = 0;
+    const minReg = 5; // se elimina el - al número negativo
     const maxReg = 35;
     let temp = +tempStr.replace('°', '');
     if (temp < -minReg) temp = -minReg;
@@ -37,17 +36,6 @@ const makeHue = (tempStr) => {
 
     return Math.round(Math.abs(hue));
 };
-
-console.log(
-    'cero',
-    makeHue('0'),
-    'max',
-    makeHue('60'),
-    'min',
-    makeHue('-90'),
-    'normal',
-    makeHue('15'),
-);
 
 const makeColor = (temp, feel, heat) => {
     if (temp > 14) hue = 200;
@@ -85,6 +73,7 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
         } else if (renderPicture) {
             card = document.createElement('picture');
             card.setAttribute('data-id', id);
+            card.className = id
 
             const image = document.createElement('img');
             image.src = data.thumb;
@@ -129,9 +118,10 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
 
     const localStyle = document.createElement('style');
     localStyle.textContent = `.${id} {
-        --_img: url(${weatherInfo.imageData.url});
+        --_img: url(${weatherInfo.imageData ? weatherInfo.imageData.url : ''});
         --_color: hsl(${makeHue(weatherInfo.now[1])}, 50%, 50%);
-        --_bk-overlay: hsl(0 0 90% / 0.5);
+        --_bk-overlay1: hsl(0 0% 90% / 1);
+        --_bk-overlay2: hsl(0 0% 90% / 0.6);
     }`;
 
     document.head.appendChild(localStyle);
@@ -151,7 +141,7 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
     tomorrow.forEach((data, index, { length }) =>
         renderCard(data, index === length - 1),
     );
-    renderCard(weatherInfo.imageData, false, true);
+    if (weatherInfo.imageData) renderCard(weatherInfo.imageData, false, true);
 };
 
 export default makeWeatherCards;
