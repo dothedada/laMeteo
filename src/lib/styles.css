@@ -108,7 +108,6 @@ body {
     flex-wrap: wrap;
     min-height: 100vh;
     align-content: center;
-    padding: 1rem 2rem 1rem 0;
     border-left: solid min(10vw, 74px) var(--text);
     background: repeating-linear-gradient(
         -45deg,
@@ -123,7 +122,6 @@ button {
     background: var(--text);
     color: var(--background);
     border: solid 1px var(--text);
-
 }
 button:hover {
     color: var(--text);
@@ -154,8 +152,7 @@ button:focus-visible {
 }
 
 body > * {
-    --overlay1: var(--_bk-overlay1, hsl(0 0 100%, 1));
-    --overlay2: var(--_bk-overlay2, hsl(0 0 100%, 1));
+    --overlay: var(--_bk-overlay, hsl(0 0 100%, 1));
     --color-overlay: var(--_color, var(--text));
     --img-url: var(--_img);
 
@@ -165,7 +162,7 @@ body > * {
     color: var(--color-overlay, var(--text));
     padding: 1.25rem 1rem 0.25rem 0.25rem;
 
-    background: linear-gradient(var(--overlay1), var(--overlay2)), var(--img-url);
+    background: linear-gradient(var(--overlay), var(--overlay)), var(--img-url);
     background-color: var(--background);
     background-attachment: fixed;
     background-position: center;
@@ -182,8 +179,8 @@ picture {
     padding: 0;
 }
 picture > img {
-    border-left: solid 1px var(--text);
-    border-right: solid 1px var(--text);
+    border-left: solid 2px var(--color-overlay);
+    border-right: solid 3px var(--color-overlay);
     height: calc(4.5rem + 2px);
 }
 
@@ -217,12 +214,14 @@ picture button:focus-visible {
     font-weight: 600;
 }
 .topRow button {
+    font-weight: 300;
     background: none;
     border: none;
-    color: var(--text);
+    color: var(--color-overlay, var(--text));
     text-decoration: underline;
-    padding: 0.25rem 0.5rem;
-    transform: translate(-0.5rem, -0.25rem);
+    padding: 0.25rem;
+    margin: 0 0.5rem 0 0;
+    transform: translate(-0.25rem, -0.25rem);
 }
 .topRow button:hover {
     color: var(--background);

@@ -133,8 +133,7 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
     localStyle.textContent = `.${id} {
         --_img: url(${weatherInfo.imageData ? weatherInfo.imageData.url : ''});
         --_color: hsl(${makeColor(weatherInfo.now[1], weatherInfo.now[3][0], weatherInfo.now[4][0])} / 1);
-        --_bk-overlay1: hsl(${makeHue(weatherInfo.now[1])} 50% 90% / 1);
-        --_bk-overlay2: hsl(${makeHue(weatherInfo.now[1])} 50% 90% / 0.5);
+        --_bk-overlay: hsl(${makeHue(weatherInfo.now[1])} 70% 90% / 0.8);
     }`;
     document.head.appendChild(localStyle);
 
