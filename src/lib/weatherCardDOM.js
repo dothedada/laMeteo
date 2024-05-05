@@ -37,9 +37,19 @@ const makeHue = (tempStr) => {
     return Math.round(Math.abs(hue));
 };
 
-const makeColor = (temp, feel, heat) => {
-    if (temp > 14) hue = 200;
+const makeSat = (perceivedStr, tempStr) => {
+    const min = 0;
+    const max = 10;
+    let diference = Math.abs(
+        +perceivedStr.replace('°', '') - +tempStr.replace('°', ''),
+    ) * 2;
+    if (diference > max) diference = max;
+
+    return Math.round((diference / (max - min)) * 100);
 };
+
+const makeColor = (temp, feel, heat) =>
+    `${makeHue(temp)} ${makeSat(feel, temp)}% ${makeSat(heat, temp)}%`;
 
 const makeWeatherCards = (weatherInfo, insertionPoint) => {
     const id = `${weatherInfo.now[0][0].replace(' ', '-')}_${new Date().getTime().toString(26)}`;
@@ -73,7 +83,7 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
         } else if (renderPicture) {
             card = document.createElement('picture');
             card.setAttribute('data-id', id);
-            card.className = id
+            card.className = id;
 
             const image = document.createElement('img');
             image.src = data.thumb;
@@ -119,10 +129,22 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
     const localStyle = document.createElement('style');
     localStyle.textContent = `.${id} {
         --_img: url(${weatherInfo.imageData ? weatherInfo.imageData.url : ''});
-        --_color: hsl(${makeHue(weatherInfo.now[1])}, 50%, 50%);
-        --_bk-overlay1: hsl(0 0% 90% / 1);
-        --_bk-overlay2: hsl(0 0% 90% / 0.6);
+        --_color: hsl(${makeColor(weatherInfo.now[1], weatherInfo.now[3][0], weatherInfo.now[4][0])} / 1);
+        --_bk-overlay1: hsl(${makeHue(weatherInfo.now[1])} 50% 90% / 1);
+        --_bk-overlay2: hsl(${makeHue(weatherInfo.now[1])} 50% 90% / 0.5);
     }`;
+
+    console.log(
+        // weatherInfo.now[1],
+        // weatherInfo.now[3][0],
+        // weatherInfo.now[4][0],
+        makeColor(
+            weatherInfo.now[1],
+            weatherInfo.now[3][0],
+            weatherInfo.now[4][0],
+        ),
+    );
+    // makeColor(weatherInfo.now[1], weatherInfo.now[3][0], weatherInfo.now[4][0]);
 
     document.head.appendChild(localStyle);
 
