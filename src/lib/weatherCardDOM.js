@@ -115,7 +115,7 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
             const imageCredits = document.createElement('div');
             imageCredits.innerHTML = data.html;
 
-            dialog.append(close, imageBig, imageCredits);
+            dialog.append(imageBig, imageCredits, close);
             document.body.appendChild(dialog);
         } else if (typeof data !== 'object') {
             card = /°/.test(data) ? makeDiv(id, 'double') : makeDiv(id);
@@ -157,7 +157,7 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
     cardStyle.textContent = `.${id} {
         --_img: url(${weatherInfo.imageData ? weatherInfo.imageData.url : ''});
         --_color: hsl(${makeColor(weatherInfo.now[1], weatherInfo.now[3][0], weatherInfo.now[4][0])} / 1);
-        --_bk-overlay: hsl(${makeHue(weatherInfo.now[1])} 30% 90% / 0.9);
+        --_bk-overlay: hsl(${makeHue(weatherInfo.now[1])} 30% 90% / 0.8);
     }`;
     document.head.appendChild(cardStyle);
 

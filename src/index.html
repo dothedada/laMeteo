@@ -7,31 +7,27 @@
     </head>
 
     <body>
-        <button
-            class="newLocation locationBTN"
-            type="button"
-            data-id="head"
-        >
+        <button class="newLocation locationBTN" type="button" data-id="head">
             <span class="sr-only">Agregar una nueva ubicación</span>
             <span aria-hidden="false">+</span>
         </button>
 
-        <button
-            class="newLocation locationBTN"
-            type="button"
-            data-id="tail"
-        >
+        <button class="newLocation locationBTN" type="button" data-id="tail">
             <span class="sr-only">Agregar una nueva ubicación</span>
             <span aria-hidden="false">+</span>
         </button>
 
         <dialog id="manageLocation">
-            <form>
+            <h2>¿De qué lugar deseas saber el clima?</h2>
+            <form method="dialog">
+                Ingresa el nombre del lugar, entre más información, más fácil
+                será de encontrar
+                <input id="location" type="text" placeholder="Nombre del lugar, ciudad, departamento, país..." />
+                <button id="findLocation" type="button">Obtener clima</button>
+
                 <button id="deviceLocation" type="button">
                     Usar mi ubicación actual
                 </button>
-                <input type="text" placeholder="Nombre del lugar" />
-                <button id="findLocation" type="button">Obtener clima</button>
             </form>
 
             <button class="close" type="button">cerrar</button>

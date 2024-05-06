@@ -25,7 +25,8 @@ const getCordsFromLocation = async (location) => {
         const response = await locationAPI.json();
         return [response[0].lat, response[0].lon];
     } catch (err) {
-        throw new Error('Error con el paso de locación a coordenadas', err);
+        alert('No se pudo obtener las coordenadas del lugar, revisa el nombre y de ser posible, ingresa más detalles, como el país o el nombre de la región. Por el momento se mostrará el clima de Bogotá', err);
+        return [4.6347462459849265, -74.07258405134549];
     }
 };
 
@@ -52,7 +53,7 @@ const getImage = async (searchPrompt) => {
 
     try {
         const request = await fetch(
-            `https://api.unsplash.com/photos/random/?query=${textPrompt}&orientation=landscape&client_id=zclGqZQC79tn1uXMgO8-ORR3nJS9Hn4h74ICzbgnbk8`,
+            `https://api.unsplash.com/photos/random/?query=${textPrompt}&client_id=zclGqZQC79tn1uXMgO8-ORR3nJS9Hn4h74ICzbgnbk8`,
             { mode: 'cors' },
         );
         const response = await request.json();
@@ -63,10 +64,10 @@ const getImage = async (searchPrompt) => {
                 .join(' '),
             url: response.urls.regular,
             thumb: response.urls.thumb,
-            html: `<a href="${response.user.links.html}?utm_source=feel_the_weather&utm_medium=referral">${response.user.name}</a> / <a href="https://unsplash.com/?utm_source=feel_the_weather&utm_medium=referral">Unsplash</a>`,
+            html: `Imagen realizada por <a href="${response.user.links.html}?utm_source=feel_the_weather&utm_medium=referral">${response.user.name}</a> / <a href="https://unsplash.com/?utm_source=feel_the_weather&utm_medium=referral">Unsplash</a>`,
         };
     } catch (err) {
-        throw new Error('error en la carga de imagen', err);
+        alert('Sucedió un problema al cargar las imágenes, mientras se soluciona, sólo se mostrará la información del clima', err);
     }
 };
 

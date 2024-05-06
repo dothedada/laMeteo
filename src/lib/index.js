@@ -12,9 +12,7 @@ import makeWeatherCards from './weatherCardDOM';
 // 1. revisar la secuencia de apis, el objeto que sale de una y el que ingresa en otra
 // 1.2- resaltar la temperatura mas alta luego de promedio mayor a 14
 // 1.3- resaltar la temperatura más baja luego de promedio menor a 14
-// 2- cargar modal de imagen adecuado
 // 3- mejorar el formulario de edicion de lugares
-// 3- pasar datos de edicion de tarjetas
 // 6- limpiar código
 
 const modal = document.querySelector('#manageLocation');
@@ -28,7 +26,7 @@ const setInsertPoint = (place = 'head') => {
 };
 
 const openZoom = (weatherId) => {
-    const zoomModal = document.querySelector(`#${weatherId}`)
+    const zoomModal = document.querySelector(`#${weatherId}`);
     zoomModal.showModal();
 };
 
@@ -63,15 +61,26 @@ const renderWeather = (form, insertPoint, location) => {
         });
 };
 
+document.querySelector('#location').addEventListener('keydown', (event) => {
+        const placeName = document.querySelector('input');
+    if (event.key === 'Enter') {
+        if (!placeName.value) event.preventDefault();
+        renderWeather(true, setInsertPoint(insertion), placeName.value);
+        placeName.value = ''
+        
+    }
+});
+
 document.body.addEventListener('click', (event) => {
     if (!event.target.closest('button')) return;
     const btn = event.target.closest('button');
 
     if (/close/.test(btn.className)) event.target.closest('dialog').close();
     if (/^find/.test(btn.id)) {
-        const placeName = document.querySelector('input').value;
-        renderWeather(true, setInsertPoint(insertion), placeName);
-        modal.close();
+        const placeName = document.querySelector('input');
+        renderWeather(true, setInsertPoint(insertion), placeName.value);
+        placeName.value = ''
+        // modal.close();
     }
     if (/^device/.test(btn.id)) {
         renderWeather(false, setInsertPoint(insertion));

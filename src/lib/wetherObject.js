@@ -58,8 +58,6 @@ const makeWeatherObject = ({ createCard, info }) => {
             ? today[1].hour[hour + until - 24][key]
             : today[0].hour[hour + until][key];
 
-
-
     return {
         time: getTime(hour),
         lat: info.location.lat,
@@ -79,9 +77,9 @@ const makeWeatherObject = ({ createCard, info }) => {
             [`${today[0].hour[hour].heatindex_c}°`, 'Índice calor'],
             makeWeatherConditionLines(current.condition.text),
             [
-                `${today[0].day.daily_chance_of_rain}% lluvia`,
-                today[0].day.daily_will_it_snow
-                    ? `${today[0].day.daily_will_it_snow}% nieve`
+                `${getHourForecast(0, 'chance_of_rain')}% lluvia`,
+                getHourForecast(0, 'chance_of_snow')
+                    ? `${getHourForecast(0, 'chance_of_snow')}% nieve`
                     : '',
             ],
             [
@@ -128,8 +126,8 @@ const makeWeatherObject = ({ createCard, info }) => {
             makeWeatherConditionLines(today[1].day.condition.text),
             [
                 `${today[1].day.daily_chance_of_rain}% lluvia`,
-                today[1].day.daily_will_it_snow
-                    ? `${today[1].day.daily_will_it_snow}% nieve`
+                today[1].day.daily_chance_of_snow
+                    ? `${today[1].day.daily_chance_of_snow}% nieve`
                     : '',
             ],
         ],
