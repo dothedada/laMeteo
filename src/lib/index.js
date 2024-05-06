@@ -8,13 +8,6 @@ import {
 import makeWeatherObject from './wetherObject';
 import makeWeatherCards from './weatherCardDOM';
 
-// TODO:
-// 1. revisar la secuencia de apis, el objeto que sale de una y el que ingresa en otra
-// 1.2- resaltar la temperatura mas alta luego de promedio mayor a 14
-// 1.3- resaltar la temperatura más baja luego de promedio menor a 14
-// 3- mejorar el formulario de edicion de lugares
-// 6- limpiar código
-
 const modal = document.querySelector('#manageLocation');
 let insertion = 'head';
 
@@ -80,7 +73,7 @@ document.body.addEventListener('click', (event) => {
         const placeName = document.querySelector('input');
         renderWeather(true, setInsertPoint(insertion), placeName.value);
         placeName.value = ''
-        // modal.close();
+        modal.close();
     }
     if (/^device/.test(btn.id)) {
         renderWeather(false, setInsertPoint(insertion));
@@ -115,5 +108,5 @@ if (placesInLocal.length) {
         }, 1000 * index);
     });
 } else {
-    renderWeather(true, setInsertPoint(), 'Bogota');
+    renderWeather(false, setInsertPoint());
 }

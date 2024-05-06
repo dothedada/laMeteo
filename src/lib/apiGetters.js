@@ -4,7 +4,7 @@ const getIPlocation = async () => {
         const response = await ipAPI.json();
         return [response.lat, response.lon];
     } catch (err) {
-        return [4.6347462459849265, -74.07258405134549];
+        return [4.634, -74.072];
     }
 };
 
@@ -26,7 +26,7 @@ const getCordsFromLocation = async (location) => {
         return [response[0].lat, response[0].lon];
     } catch (err) {
         alert('No se pudo obtener las coordenadas del lugar, revisa el nombre y de ser posible, ingresa más detalles, como el país o el nombre de la región. Por el momento se mostrará el clima de Bogotá', err);
-        return [4.6347462459849265, -74.07258405134549];
+        return [4.634, -74.072];
     }
 };
 
@@ -67,7 +67,14 @@ const getImage = async (searchPrompt) => {
             html: `Imagen realizada por <a href="${response.user.links.html}?utm_source=feel_the_weather&utm_medium=referral">${response.user.name}</a> / <a href="https://unsplash.com/?utm_source=feel_the_weather&utm_medium=referral">Unsplash</a>`,
         };
     } catch (err) {
-        alert('Sucedió un problema al cargar las imágenes, mientras se soluciona, sólo se mostrará la información del clima', err);
+        alert('Sucedió un problema al cargar las imágenes, mientras se soluciona, sólo se mostrará la información del clima y una foto de un perrito', err);
+        return {
+            alt: 'Unos perrios corriendo',
+            url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSk87Jn2Y7H1wQVn7Yfuvf9byOwQ5qlrvJqM-QDWZV1tA&s',
+            thumb: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSk87Jn2Y7H1wQVn7Yfuvf9byOwQ5qlrvJqM-QDWZV1tA&s',
+            html: ``,
+
+        }
     }
 };
 
