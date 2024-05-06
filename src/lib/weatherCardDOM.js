@@ -68,8 +68,6 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
     let firstCard = true;
     let sectionTitle;
 
-    localStorage.setItem(`lameteo_${id}`, [weatherInfo.lat, weatherInfo.lon])
-
     const renderCard = (data, last, renderPicture = false) => {
         let card;
 
@@ -102,6 +100,23 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
             image.alt = data.alt;
 
             card.append(image, makeBTN('zoom', 'zoomBTN'));
+
+            // crear modal de dialogo
+            const dialog = document.createElement('dialog');
+            dialog.id = id;
+            dialog.className = 'zoomImage'
+
+            const close = makeBTN('cerrar', 'close');
+
+            const imageBig = document.createElement('img');
+            imageBig.src = data.url;
+            imageBig.alt = data.thumb;
+
+            const imageCredits = document.createElement('div');
+            imageCredits.innerHTML = data.html;
+
+            dialog.append(close, imageBig, imageCredits);
+            document.body.appendChild(dialog);
         } else if (typeof data !== 'object') {
             card = /°/.test(data) ? makeDiv(id, 'double') : makeDiv(id);
             card.textContent = data;
@@ -138,13 +153,13 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
         firstCard = false;
     };
 
-    const localStyle = document.createElement('style');
-    localStyle.textContent = `.${id} {
+    const cardStyle = document.createElement('style');
+    cardStyle.textContent = `.${id} {
         --_img: url(${weatherInfo.imageData ? weatherInfo.imageData.url : ''});
         --_color: hsl(${makeColor(weatherInfo.now[1], weatherInfo.now[3][0], weatherInfo.now[4][0])} / 1);
-        --_bk-overlay: hsl(${makeHue(weatherInfo.now[1])} 70% 90% / 0.8);
+        --_bk-overlay: hsl(${makeHue(weatherInfo.now[1])} 30% 90% / 0.9);
     }`;
-    document.head.appendChild(localStyle);
+    document.head.appendChild(cardStyle);
 
     now.forEach((data, index, { length }) =>
         renderCard(data, index === length - 1),
@@ -162,6 +177,8 @@ const makeWeatherCards = (weatherInfo, insertionPoint) => {
         renderCard(data, index === length - 1),
     );
     if (weatherInfo.imageData) renderCard(weatherInfo.imageData, false, true);
+
+    localStorage.setItem(`lameteo_${id}`, [weatherInfo.lat, weatherInfo.lon]);
 };
 
 export default makeWeatherCards;

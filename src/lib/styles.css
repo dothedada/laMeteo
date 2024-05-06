@@ -111,8 +111,8 @@ body {
     border-left: solid min(10vw, 74px) var(--text);
     background: repeating-linear-gradient(
         -45deg,
-        var(--background),
-        var(--background) 5px,
+        hsl(0, 0%, 50%),
+        hsl(0, 0%, 50%) 5px,
         var(--text) 5px,
         var(--text) 10px
     );
@@ -139,8 +139,7 @@ button:focus-visible {
     font-size: 3rem;
     font-weight: 900;
     aspect-ratio: 1;
-    border-bottom: solid 3px var(--text);
-    border-top: none;
+    border: solid 3px var(--text);
 }
 .newLocation:hover {
     color: var(--text);
@@ -171,10 +170,10 @@ body > * {
 
 picture {
     padding: 0;
-}
-picture > img {
     border-left: solid 2px var(--color-overlay);
     border-right: solid 3px var(--color-overlay);
+}
+picture > img {
     height: calc(4.5rem + 2px);
 }
 
@@ -192,7 +191,8 @@ picture button {
     color: var(--background);
 }
 picture button:hover {
-    background: none;
+    background: var(--overlay);
+    color: var(--text);
 }
 picture button:focus-visible {
     outline-offset: -8px;
@@ -289,16 +289,16 @@ dialog button {
     width: 100%;
 }
 
-#zoomImage {
+.zoomImage {
     padding: 0;
     color: var(--background);
     background: var(--text);
     text-align: center;
 }
-#zoomImage a {
+.zoomImage a {
     color: var(--background);
 }
-#zoomImage a:hover {
+.zoomImage a:hover {
     color: red;
 }
 

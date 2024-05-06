@@ -18,7 +18,6 @@ import makeWeatherCards from './weatherCardDOM';
 // 6- limpiar código
 
 const modal = document.querySelector('#manageLocation');
-// const imgModal = document.querySelector('#zoomImage');
 let insertion = 'head';
 
 const setInsertPoint = (place = 'head') => {
@@ -28,10 +27,10 @@ const setInsertPoint = (place = 'head') => {
     return document.body.querySelector(`.${place}`);
 };
 
-// const openZoom = (weatherId) => {
-// console.log(weatherId);
-// imgModal.showModal();
-// };
+const openZoom = (weatherId) => {
+    const zoomModal = document.querySelector(`#${weatherId}`)
+    zoomModal.showModal();
+};
 
 const removeCards = (weatherId) => {
     document
@@ -86,12 +85,12 @@ document.body.addEventListener('click', (event) => {
 
     if (/removeBTN/.test(btn.className)) removeCards(weatherId);
     if (/locationBTN/.test(btn.className)) selectLocationDialog(weatherId);
-    // if (/zoomBTN/.test(btn.className)) openZoom(weatherId);
+    if (/zoomBTN/.test(btn.className)) openZoom(weatherId);
 });
 
 const placesInLocal = Object.keys(localStorage);
-if (placesInLocal) {
-    placesInLocal.forEach((place,index) => {
+if (placesInLocal.length) {
+    placesInLocal.forEach((place, index) => {
         setTimeout(() => {
             getWeather(localStorage.getItem(place).split(','))
                 .then((weatherInfo) => makeWeatherObject(weatherInfo))
@@ -105,8 +104,7 @@ if (placesInLocal) {
                 });
             localStorage.removeItem(place);
         }, 1000 * index);
-    })
-
+    });
 } else {
     renderWeather(true, setInsertPoint(), 'Bogota');
 }
