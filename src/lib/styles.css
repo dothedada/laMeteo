@@ -169,6 +169,7 @@ body > * {
 }
 
 picture {
+    width: max-content;
     padding: 0;
     border-left: solid 2px var(--color-overlay);
     border-right: solid 3px var(--color-overlay);

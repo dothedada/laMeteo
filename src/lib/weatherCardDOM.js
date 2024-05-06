@@ -54,13 +54,6 @@ const makePercent = (perceivedStr, tempStr) => {
 const makeColor = (temp, feel, heat) =>
     `${makeHue(temp)} ${makePercent(feel, temp)}% ${makePercent(heat, temp) / 2}%`;
 
-const setHighlight = (thisValue, comparison1, comparison2) => {
-    let highlight = 3;
-    if (thisValue < comparison1) highlight -= 1;
-    if (thisValue < comparison2) highlight -= 1;
-    return highlight;
-};
-
 const makeWeatherCards = (weatherInfo, insertionPoint) => {
     const id = `${weatherInfo.now[0][0].replace(' ', '-')}_${new Date().getTime().toString(26)}`;
     const { now, nextHour, next2Hours, next3Hours, tomorrow } = weatherInfo;
